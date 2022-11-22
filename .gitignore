@@ -1,0 +1,5 @@
+*.vcxproj
+*.filters
+*.user
+*.vcxproj.filters
+*.vcxproj.user
