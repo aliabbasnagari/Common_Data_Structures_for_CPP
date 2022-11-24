@@ -4,4 +4,4 @@
 
 /* Akhir kaar seekh hi gya github xD xD*/
 
-/* Good /*
+/* Good */
