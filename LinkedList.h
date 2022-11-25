@@ -1,40 +1,19 @@
+/*
+Ali Abbas - 21I-2503
+Adnan Hayat
+Muhammad Wissam - 21I-0709
+*/
 #pragma once
 #ifndef LinkedList_H
 #define LinkedList_H
 
 #include <iostream>
+#include "Node.h"
 using namespace std;
 
 template <typename T>
-class Node {
-public:
-	T data;
-	Node<T>* next;
-	Node(T _data) {
-		data = _data;
-		next = NULL;
-	}
-	Node(T _data, Node<T>* _next) {
-		data = _data;
-		next = _next;
-	}
-	void setData(T _data) {
-		data = _data;
-	}
-	void setNext(Node<T>* _next) {
-		next = _next;
-	}
-	T getData() {
-		return data;
-	}
-	Node<T>* getNext() {
-		return next;
-	}
-};
-
-template <typename T>
 class LinkedList {
-public:
+private:
 	int size;
 	Node<T>* head;
 	Node<T>* tail;
@@ -172,7 +151,7 @@ public:
 		{
 			if (curr->getData() == to)
 			{
-				curr->data = val;
+				curr->value = val;
 			}
 			curr = curr->getNext();
 		}
@@ -210,11 +189,11 @@ public:
 		while (this->tail->next != NULL) {
 			temp = head;
 			while (temp->next != NULL) {
-				if (temp->data > this->tail->data) {
+				if (temp->value > this->tail->value) {
 					T swapData;
-					swapData = temp->data;
-					temp->data = this->tail->data;
-					this->tail->data = swapData;
+					swapData = temp->value;
+					temp->value = this->tail->value;
+					this->tail->value = swapData;
 				}
 				temp = temp->next;
 			}
@@ -242,10 +221,9 @@ public:
 
 	~LinkedList() {
 		Node<T>* curr = head;
-		Node<T>* to_delete = curr;
 		while (curr->getNext() != NULL)
 		{
-			to_delete = curr;
+			Node<T>* to_delete = curr;
 			curr = curr->getNext();
 			delete[] to_delete;
 		}
