@@ -16,13 +16,13 @@ public:
 		value = _data;
 		next = _next;
 	}
-	void setData(T _data) {
+	void setValue(T _data) {
 		value = _data;
 	}
 	void setNext(Node<T>* _next) {
 		next = _next;
 	}
-	T getData() {
+	T getValue() {
 		return value;
 	}
 	Node<T>* getNext() {

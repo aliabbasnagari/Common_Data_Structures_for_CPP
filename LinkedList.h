@@ -149,7 +149,7 @@ public:
 		Node<T>* curr = head;
 		while (curr->getNext() != NULL)
 		{
-			if (curr->getData() == to)
+			if (curr->getValue() == to)
 			{
 				curr->value = val;
 			}
@@ -162,12 +162,12 @@ public:
 		Node<T>* curr = head;
 		while (curr->getNext() != NULL)
 		{
-			if (curr->getData() == _val)
+			if (curr->getValue() == _val)
 				return index;
 			curr = curr->getNext();
 			index++;
 		}
-		if (curr->getData() == _val)
+		if (curr->getValue() == _val)
 			return index;
 		return -1;
 	}
@@ -212,10 +212,10 @@ public:
 		Node<T>* curr = head;
 		while (curr->getNext() != NULL)
 		{
-			cout << curr->getData() << " , ";
+			cout << curr->getValue() << " , ";
 			curr = curr->getNext();
 		}
-		cout << curr->getData();
+		cout << curr->getValue();
 		cout << " ]";
 	}
 
