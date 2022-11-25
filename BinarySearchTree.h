@@ -141,6 +141,167 @@ public:
 		}
 		return false;
 	}
+
+	T getMin(TreeNode<T>* _root) {
+		TreeNode<T>* curr = _root;
+		while (curr->left != NULL) {
+			curr = curr->left;
+		}
+		return curr->value;
+	}
+
+	void Delete(T _val, TreeNode<T>* begin) {
+		if (root->value == _val) {
+			bool hl = 0, hr = 0;
+			if (root->left == NULL)
+				hl = true;
+			if (root->right == NULL)
+				hr = true;
+			if (hl && hr) {
+				delete root;
+				root = NULL;
+			}
+			else if (hl) {
+				cout << "1" << endl;
+				TreeNode<T>* swapnode = root->right;
+				delete root;
+				root = swapnode;
+				swapnode = NULL;
+			}
+			else if (hr) {
+				cout << "2" << endl;
+				TreeNode<T>* swapnode = root->left;
+				delete root;
+				root = swapnode;
+				swapnode = NULL;
+			}
+			else {
+				root->value = getMin(root->right);
+				if (root->right->value == getMin(root->right)) {
+					delete root->right;
+					root->right = NULL;
+				}
+				else {
+					TreeNode<T>* minnode = root->right;
+					while (minnode->left->left != NULL) {
+						minnode = minnode->left;
+					}
+					if (minnode->left->right != NULL) {
+						TreeNode<T>* temp = minnode->left->right;
+						minnode->left = temp;
+						temp = NULL;
+					}
+					else {
+						delete minnode->left;
+						minnode->left = NULL;
+					}
+				}
+			}
+			return;
+		}
+		else {
+			if (begin->left != NULL && begin->left->value == _val) {
+				bool hl = 0, hr = 0;
+				if (begin->left->left == NULL)
+					hl = true;
+				if (begin->left->right == NULL)
+					hr = true;
+				if (hl && hr) {
+					delete begin->left;
+					begin->left = NULL;
+				}
+				else if (hl) {
+					TreeNode<T>* swapnode = begin->left->right;
+					delete begin->left;
+					begin->left = swapnode;
+					swapnode = NULL;
+				}
+				else if (hr) {
+					TreeNode<T>* swapnode = begin->left->left;
+					delete begin->left;
+					begin->left = swapnode;
+					swapnode = NULL;
+				}
+				else {
+					begin->left->value = getMin(begin->left->right);
+					if (begin->left->right->value == getMin(begin->left->right)) {
+						delete begin->left->right;
+						begin->left->right = NULL;
+					}
+					else {
+						TreeNode<T>* minnode = begin->left->right;
+						while (minnode->left->left != NULL) {
+							minnode = minnode->left;
+						}
+						if (minnode->left->right != NULL) {
+							TreeNode<T>* temp = minnode->left->right;
+							minnode->left = temp;
+							temp = NULL;
+						}
+						else {
+							delete minnode->left;
+							minnode->left = NULL;
+						}
+					}
+				}
+				return;
+			}
+			else if (begin->right != NULL && begin->right->value == _val) {
+				bool hl = 0, hr = 0;
+				if (begin->right->left == NULL)
+					hl = true;
+				if (begin->right->right == NULL)
+					hr = true;
+				if (hl && hr) {
+					delete begin->right;
+					begin->right = NULL;
+				}
+				else if (hl) {
+					TreeNode<T>* swapnode = begin->right->right;
+					delete begin->right;
+					begin->right = swapnode;
+					swapnode = NULL;
+				}
+				else if (hr) {
+					TreeNode<T>* swapnode = begin->right->left;
+					delete begin->right;
+					begin->right = swapnode;
+					swapnode = NULL;
+				}
+				else {
+					begin->right->value = getMin(begin->right->right);
+					if (begin->right->right->value == getMin(begin->right->right)) {
+						delete begin->right->right;
+						begin->right->right = NULL;
+					}
+					else {
+						TreeNode<T>* minnode = begin->right->right;
+						while (minnode->left->left != NULL) {
+							minnode = minnode->left;
+						}
+						if (minnode->left->right != NULL) {
+							TreeNode<T>* temp = minnode->left->right;
+							minnode->left = temp;
+							temp = NULL;
+						}
+						else {
+							delete minnode->left;
+							minnode->left = NULL;
+						}
+					}
+				}
+				return;
+			}
+			else if (begin->value > _val)
+				Delete(_val, begin->left);
+			else
+				Delete(_val, begin->right);
+		}
+	}
+
+	~BSTree() {
+		delete[] root;
+	}
 };
 
 #endif !BST_H
