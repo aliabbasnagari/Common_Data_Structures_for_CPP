@@ -1,20 +1,26 @@
+/*
+Ali Abbas - 21I-2503
+Adnan Hayat
+Muhammad Wissam - 21I-0709
+*/
 #pragma once
+#ifndef BTREE_H
+#define BTREE_H
 
 #include <iostream>
 using namespace std;
-template <class T>
+
+template <typename T>
 class BTreeNode {
+private:
     T* keys;
     T t;
     BTreeNode<T>** C;
     T n;
     bool leaf;
-
 public:
     BTreeNode(T _t, bool _leaf);
-
     void traverse();
-
     T findKey(T k);
     void insertNonFull(T k);
     void splitChild(T i, BTreeNode* y);
@@ -27,9 +33,10 @@ public:
     void borrowFromPrev(T idx);
     void borrowFromNext(T idx);
     void merge(T idx);
-    friend class BTree;
+    //friend class BTree;
 };
-template <class T>
+
+template <typename T>
 class BTree {
     BTreeNode<T>* root;
     T t;
@@ -39,14 +46,11 @@ public:
         root = NULL;
         t = _t;
     }
-
     void traverse() {
         if (root != NULL)
             root->traverse();
     }
-
     void insertion(T k);
-
     void deletion(T k);
 };
 
@@ -54,10 +58,8 @@ public:
 template <class T> BTreeNode<T>::BTreeNode(T t1, bool leaf1) {
     t = t1;
     leaf = leaf1;
-
     keys = new T[2 * t - 1];
     C = new BTreeNode * [2 * t];
-
     n = 0;
 }
 
@@ -326,7 +328,7 @@ template <class T> void BTreeNode<T>::splitChild(T i, BTreeNode* y) {
 }
 
 // Traverse
-void BTreeNode<T>::traverse() {
+template <class T> void BTreeNode<T>::traverse() {
     T i;
     for (i = 0; i < n; i++) {
         if (leaf == false)
@@ -358,3 +360,5 @@ template <class T> void BTree<T>::deletion(T k) {
     }
     return;
 }
+
+#endif !BTREE
