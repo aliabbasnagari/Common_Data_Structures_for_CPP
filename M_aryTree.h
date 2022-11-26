@@ -2,40 +2,40 @@
 
 #include <iostream>
 using namespace std;
-
+template <class T>
 class BTreeNode {
-    int* keys;
-    int t;
+    T* keys;
+    T t;
     BTreeNode** C;
-    int n;
+    T n;
     bool leaf;
 
 public:
-    BTreeNode(int _t, bool _leaf);
+    BTreeNode(T _t, bool _leaf);
 
     void traverse();
 
-    int findKey(int k);
-    void insertNonFull(int k);
-    void splitChild(int i, BTreeNode* y);
-    void deletion(int k);
-    void removeFromLeaf(int idx);
-    void removeFromNonLeaf(int idx);
-    int getPredecessor(int idx);
-    int getSuccessor(int idx);
-    void fill(int idx);
-    void borrowFromPrev(int idx);
-    void borrowFromNext(int idx);
-    void merge(int idx);
+    T findKey(T k);
+    void insertNonFull(T k);
+    void splitChild(T i, BTreeNode* y);
+    void deletion(T k);
+    void removeFromLeaf(T idx);
+    void removeFromNonLeaf(T idx);
+    T getPredecessor(T idx);
+    T getSuccessor(T idx);
+    void fill(T idx);
+    void borrowFromPrev(T idx);
+    void borrowFromNext(T idx);
+    void merge(T idx);
     friend class BTree;
 };
-
+template <class T>
 class BTree {
     BTreeNode* root;
-    int t;
+    T t;
 
 public:
-    BTree(int _t) {
+    BTree(T _t) {
         root = NULL;
         t = _t;
     }
@@ -45,33 +45,33 @@ public:
             root->traverse();
     }
 
-    void insertion(int k);
+    void insertion(T k);
 
-    void deletion(int k);
+    void deletion(T k);
 };
 
 // B tree node
-BTreeNode::BTreeNode(int t1, bool leaf1) {
+template <class T> BTreeNode<T>::BTreeNode(T t1, bool leaf1) {
     t = t1;
     leaf = leaf1;
 
-    keys = new int[2 * t - 1];
+    keys = new T[2 * t - 1];
     C = new BTreeNode * [2 * t];
 
     n = 0;
 }
 
 // Find the key
-int BTreeNode::findKey(int k) {
-    int idx = 0;
+template <class T> T BTreeNode<T>::findKey(T k) {
+    T idx = 0;
     while (idx < n && keys[idx] < k)
         ++idx;
     return idx;
 }
 
 // Deletion operation
-void BTreeNode::deletion(int k) {
-    int idx = findKey(k);
+template <class T>  void BTreeNode<T>::deletion(T k) {
+    T idx = findKey(k);
 
     if (idx < n && keys[idx] == k) {
         if (leaf)
@@ -99,8 +99,8 @@ void BTreeNode::deletion(int k) {
 }
 
 // Remove from the leaf
-void BTreeNode::removeFromLeaf(int idx) {
-    for (int i = idx + 1; i < n; ++i)
+template <class T> void BTreeNode<T>::removeFromLeaf(T idx) {
+    for (T i = idx + 1; i < n; ++i)
         keys[i - 1] = keys[i];
 
     n--;
@@ -109,17 +109,17 @@ void BTreeNode::removeFromLeaf(int idx) {
 }
 
 // Delete from non leaf node
-void BTreeNode::removeFromNonLeaf(int idx) {
-    int k = keys[idx];
+template <class T>  void BTreeNode<T>::removeFromNonLeaf(T idx) {
+    T k = keys[idx];
 
     if (C[idx]->n >= t) {
-        int pred = getPredecessor(idx);
+        T pred = getPredecessor(idx);
         keys[idx] = pred;
         C[idx]->deletion(pred);
     }
 
     else if (C[idx + 1]->n >= t) {
-        int succ = getSuccessor(idx);
+        T succ = getSuccessor(idx);
         keys[idx] = succ;
         C[idx + 1]->deletion(succ);
     }
@@ -131,7 +131,7 @@ void BTreeNode::removeFromNonLeaf(int idx) {
     return;
 }
 
-int BTreeNode::getPredecessor(int idx) {
+template <class T> T BTreeNode<T>::getPredecessor(T idx) {
     BTreeNode* cur = C[idx];
     while (!cur->leaf)
         cur = cur->C[cur->n];
@@ -139,7 +139,7 @@ int BTreeNode::getPredecessor(int idx) {
     return cur->keys[cur->n - 1];
 }
 
-int BTreeNode::getSuccessor(int idx) {
+template <class T> T BTreeNode<T>::getSuccessor(T idx) {
     BTreeNode* cur = C[idx + 1];
     while (!cur->leaf)
         cur = cur->C[0];
@@ -147,7 +147,7 @@ int BTreeNode::getSuccessor(int idx) {
     return cur->keys[0];
 }
 
-void BTreeNode::fill(int idx) {
+template <class T> void BTreeNode<T>::fill(T idx) {
     if (idx != 0 && C[idx - 1]->n >= t)
         borrowFromPrev(idx);
 
@@ -164,15 +164,15 @@ void BTreeNode::fill(int idx) {
 }
 
 // Borrow from previous
-void BTreeNode::borrowFromPrev(int idx) {
+template <class T> void BTreeNode<T>::borrowFromPrev(T idx) {
     BTreeNode* child = C[idx];
     BTreeNode* sibling = C[idx - 1];
 
-    for (int i = child->n - 1; i >= 0; --i)
+    for (T i = child->n - 1; i >= 0; --i)
         child->keys[i + 1] = child->keys[i];
 
     if (!child->leaf) {
-        for (int i = child->n; i >= 0; --i)
+        for (T i = child->n; i >= 0; --i)
             child->C[i + 1] = child->C[i];
     }
 
@@ -190,7 +190,7 @@ void BTreeNode::borrowFromPrev(int idx) {
 }
 
 // Borrow from the next
-void BTreeNode::borrowFromNext(int idx) {
+template <class T> void BTreeNode<T>::borrowFromNext(T idx) {
     BTreeNode* child = C[idx];
     BTreeNode* sibling = C[idx + 1];
 
@@ -201,11 +201,11 @@ void BTreeNode::borrowFromNext(int idx) {
 
     keys[idx] = sibling->keys[0];
 
-    for (int i = 1; i < sibling->n; ++i)
+    for (T i = 1; i < sibling->n; ++i)
         sibling->keys[i - 1] = sibling->keys[i];
 
     if (!sibling->leaf) {
-        for (int i = 1; i <= sibling->n; ++i)
+        for (T i = 1; i <= sibling->n; ++i)
             sibling->C[i - 1] = sibling->C[i];
     }
 
@@ -216,24 +216,24 @@ void BTreeNode::borrowFromNext(int idx) {
 }
 
 // Merge
-void BTreeNode::merge(int idx) {
+template <class T> void BTreeNode<T>::merge(T idx) {
     BTreeNode* child = C[idx];
     BTreeNode* sibling = C[idx + 1];
 
     child->keys[t - 1] = keys[idx];
 
-    for (int i = 0; i < sibling->n; ++i)
+    for (T i = 0; i < sibling->n; ++i)
         child->keys[i + t] = sibling->keys[i];
 
     if (!child->leaf) {
-        for (int i = 0; i <= sibling->n; ++i)
+        for (T i = 0; i <= sibling->n; ++i)
             child->C[i + t] = sibling->C[i];
     }
 
-    for (int i = idx + 1; i < n; ++i)
+    for (T i = idx + 1; i < n; ++i)
         keys[i - 1] = keys[i];
 
-    for (int i = idx + 2; i <= n; ++i)
+    for (T i = idx + 2; i <= n; ++i)
         C[i - 1] = C[i];
 
     child->n += sibling->n + 1;
@@ -244,7 +244,7 @@ void BTreeNode::merge(int idx) {
 }
 
 // Insertion operation
-void BTree::insertion(int k) {
+template <class T> void BTree<T>::insertion(T k) {
     if (root == NULL) {
         root = new BTreeNode(t, true);
         root->keys[0] = k;
@@ -258,7 +258,7 @@ void BTree::insertion(int k) {
 
             s->splitChild(0, root);
 
-            int i = 0;
+            T i = 0;
             if (s->keys[0] < k)
                 i++;
             s->C[i]->insertNonFull(k);
@@ -271,8 +271,8 @@ void BTree::insertion(int k) {
 }
 
 // Insertion non full
-void BTreeNode::insertNonFull(int k) {
-    int i = n - 1;
+template <class T> void BTreeNode<T>::insertNonFull(T k) {
+    T i = n - 1;
 
     if (leaf == true) {
         while (i >= 0 && keys[i] > k) {
@@ -298,26 +298,26 @@ void BTreeNode::insertNonFull(int k) {
 }
 
 // Split child
-void BTreeNode::splitChild(int i, BTreeNode* y) {
+template <class T> void BTreeNode<T>::splitChild(T i, BTreeNode* y) {
     BTreeNode* z = new BTreeNode(y->t, y->leaf);
     z->n = t - 1;
 
-    for (int j = 0; j < t - 1; j++)
+    for (T j = 0; j < t - 1; j++)
         z->keys[j] = y->keys[j + t];
 
     if (y->leaf == false) {
-        for (int j = 0; j < t; j++)
+        for (T j = 0; j < t; j++)
             z->C[j] = y->C[j + t];
     }
 
     y->n = t - 1;
 
-    for (int j = n; j >= i + 1; j--)
+    for (T j = n; j >= i + 1; j--)
         C[j + 1] = C[j];
 
     C[i + 1] = z;
 
-    for (int j = n - 1; j >= i; j--)
+    for (T j = n - 1; j >= i; j--)
         keys[j + 1] = keys[j];
 
     keys[i] = y->keys[t - 1];
@@ -327,7 +327,7 @@ void BTreeNode::splitChild(int i, BTreeNode* y) {
 
 // Traverse
 void BTreeNode::traverse() {
-    int i;
+    T i;
     for (i = 0; i < n; i++) {
         if (leaf == false)
             C[i]->traverse();
@@ -339,7 +339,7 @@ void BTreeNode::traverse() {
 }
 
 // Delete Operation
-void BTree::deletion(int k) {
+template <class T> void BTree<T>::deletion(T k) {
     if (!root) {
         cout << "The tree is empty\n";
         return;
