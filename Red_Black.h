@@ -1,16 +1,18 @@
 #pragma once
 #include <iostream>
 using namespace std;
+//data=Key is a problem
+//color template??
 template <class T>
 struct Node {
     T data;
-    Node* parent;
-    Node* left;
-    Node* right;
+    Node<T>* parent;
+    Node<T>* left;
+    Node<T>* right;
     int color;
 };
 
-typedef Node* NodePtr;
+template <class T> typedef Node<T>* NodePtr;
 
 class RedBlackTree {
 private:
@@ -264,7 +266,7 @@ private:
 
 public:
     RedBlackTree() {
-        TNULL = new Node;
+        TNULL = new Node<T>;
         TNULL->color = 0;
         TNULL->left = nullptr;
         TNULL->right = nullptr;
@@ -370,7 +372,7 @@ public:
 
     // Inserting a node
     void insert(int key) {
-        NodePtr node = new Node;
+        NodePtr node = new Node<T>;
         node->parent = nullptr;
         node->data = key;
         node->left = TNULL;

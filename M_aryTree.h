@@ -6,7 +6,7 @@ template <class T>
 class BTreeNode {
     T* keys;
     T t;
-    BTreeNode** C;
+    BTreeNode<T>** C;
     T n;
     bool leaf;
 
@@ -31,7 +31,7 @@ public:
 };
 template <class T>
 class BTree {
-    BTreeNode* root;
+    BTreeNode<T>* root;
     T t;
 
 public:
@@ -326,7 +326,7 @@ template <class T> void BTreeNode<T>::splitChild(T i, BTreeNode* y) {
 }
 
 // Traverse
-void BTreeNode::traverse() {
+void BTreeNode<T>::traverse() {
     T i;
     for (i = 0; i < n; i++) {
         if (leaf == false)
