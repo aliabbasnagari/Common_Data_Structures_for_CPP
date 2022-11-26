@@ -25,6 +25,7 @@ public:
 	int getDeaths();
 	float getDeathRate();
 	string getCause();
+	string getState();
 	string getCause113();
 };
 
@@ -37,3 +38,47 @@ Entry::Entry(int _id = 0, int _yr = 0, string _cn = "", string _cn1 = "", string
 	deaths = _dt;
 	death_rate = _dr;
 };
+
+Entry::setId( int xd) {
+	id = xd;
+}Entry::setDeaths (int dd) {
+	deaths = dd;
+}
+Entry::setCause(string cause) {
+	cause_name = cause;
+}
+Entry::setCause113(string cause113) {
+	cause_name_113 = cause113;
+
+ }
+Entry::setDeathRate(float dr) {
+	death_rate = dr;
+}
+Entry::setState(string st) {
+	state = st;
+}
+Entry::setYear(int yer) {
+	year = yer;
+}
+int Entry::getId() {
+	return id ;
+}
+int Entry::getDeaths() {
+	return deaths;
+}
+string Entry::getCause() {
+	return cause_name;
+}
+string Entry::getCause113() {
+	return cause_name_113 ;
+
+}
+float Entry::getDeathRate() {
+	return death_rate ;
+}
+string Entry::getState() {
+	return state ;
+}
+int Entry::getYear() {
+	return year ;
+}
