@@ -12,14 +12,14 @@ using namespace std;
 
 template <typename T>
 class BTreeNode {
-private:
+public:
     T* keys;
     T t;
     BTreeNode<T>** C;
     T n;
     bool leaf;
 public:
-    BTreeNode(T _t, bool _leaf);
+    BTreeNode<T>(T _t, bool _leaf);
     void traverse();
     T findKey(T k);
     void insertNonFull(T k);
@@ -38,11 +38,12 @@ public:
 
 template <typename T>
 class BTree {
+public:
     BTreeNode<T>* root;
-    T t;
+    int t;
 
 public:
-    BTree(T _t) {
+    BTree(int _t) {
         root = NULL;
         t = _t;
     }
@@ -55,7 +56,7 @@ public:
 };
 
 // B tree node
-template <class T> BTreeNode<T>::BTreeNode(T t1, bool leaf1) {
+template <class T> BTreeNode<T>::BTreeNode<T>(T t1, bool leaf1) {
     t = t1;
     leaf = leaf1;
     keys = new T[2 * t - 1];
@@ -248,13 +249,13 @@ template <class T> void BTreeNode<T>::merge(T idx) {
 // Insertion operation
 template <class T> void BTree<T>::insertion(T k) {
     if (root == NULL) {
-        root = new BTreeNode(t, true);
+        root = new BTreeNode<T>(t, true);
         root->keys[0] = k;
         root->n = 1;
     }
     else {
         if (root->n == 2 * t - 1) {
-            BTreeNode* s = new BTreeNode(t, false);
+            BTreeNode<T>* s = new BTreeNode<T>(t, false);
 
             s->C[0] = root;
 
@@ -301,7 +302,7 @@ template <class T> void BTreeNode<T>::insertNonFull(T k) {
 
 // Split child
 template <class T> void BTreeNode<T>::splitChild(T i, BTreeNode* y) {
-    BTreeNode* z = new BTreeNode(y->t, y->leaf);
+    BTreeNode* z = new BTreeNode<T>(y->t, y->leaf);
     z->n = t - 1;
 
     for (T j = 0; j < t - 1; j++)

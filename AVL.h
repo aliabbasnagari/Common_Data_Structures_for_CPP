@@ -118,7 +118,7 @@ public:
 	{
 		Node<S>* movernode = temp;
 
-		while (movernode != NULL)
+		while (movernode->left != NULL)
 		{
 			movernode = movernode->left;
 		}

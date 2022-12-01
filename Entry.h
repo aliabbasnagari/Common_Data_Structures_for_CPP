@@ -27,6 +27,7 @@ public:
 	string getCause();
 	string getState();
 	string getCause113();
+	friend ostream& operator<<(ostream& output, const Entry&);
 };
 
 Entry::Entry(int _id = 0, int _yr = 0, string _cn = "", string _cn1 = "", string _st = "", int _dt = 0, float _dr = 0) {
@@ -39,25 +40,26 @@ Entry::Entry(int _id = 0, int _yr = 0, string _cn = "", string _cn1 = "", string
 	death_rate = _dr;
 };
 
-Entry::setId( int xd) {
+void Entry::setId( int xd) {
 	id = xd;
-}Entry::setDeaths (int dd) {
+}
+void Entry::setDeaths (int dd) {
 	deaths = dd;
 }
-Entry::setCause(string cause) {
+void Entry::setCause(string cause) {
 	cause_name = cause;
 }
-Entry::setCause113(string cause113) {
+void Entry::setCause113(string cause113) {
 	cause_name_113 = cause113;
 
  }
-Entry::setDeathRate(float dr) {
+void Entry::setDeathRate(float dr) {
 	death_rate = dr;
 }
-Entry::setState(string st) {
+void Entry::setState(string st) {
 	state = st;
 }
-Entry::setYear(int yer) {
+void Entry::setYear(int yer) {
 	year = yer;
 }
 int Entry::getId() {
@@ -81,4 +83,10 @@ string Entry::getState() {
 }
 int Entry::getYear() {
 	return year ;
+}
+
+ostream& operator<<(ostream& out, const Entry& ent)
+{
+	cout << ent.id << " - " << ent.year << " - " << ent.cause_name << " - " << ent.deaths << endl;
+	return out;
 }
