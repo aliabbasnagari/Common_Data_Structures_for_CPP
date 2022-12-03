@@ -97,27 +97,4 @@ public:
 	}
 };
 
-template<typename T>
-void roundRobin(Queue<T>* q, T quantum) {
-	while (!q->isEmpty())
-	{
-		cout << endl;
-		q->show();
-
-		cout << "Execution time: " << q->Front() << endl;
-		T rem = q->Front() - quantum;
-		cout << "Remaining time: " << rem << endl;
-		if (rem > 0)
-		{
-			cout << "Task is not comleted, it is being rescheduled!" << endl;
-			q->enqueue(rem);
-			q->dequeue();
-		}
-		else {
-			cout << "Task is comleted, and it is removed from queue!" << endl;
-			q->dequeue();
-		}
-	}
-}
-
 #endif // !QUEUE_H

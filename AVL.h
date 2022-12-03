@@ -1,21 +1,23 @@
 #pragma once
 #include<iostream>
+#include "Utils.h"
 using namespace std;
 
 template<typename T>
-struct Node
+class AVLNode
 {
+public:
 	T value;
-	Node<T>* left;
-	Node<T>* right;
+	AVLNode<T>* left;
+	AVLNode<T>* right;
 	int height;
 
-	Node()
+	AVLNode()
 	{
 		left = NULL;
 		right = NULL;
 	}
-	Node(T n)
+	AVLNode(T n)
 	{
 		value = n;
 		left = NULL;
@@ -23,122 +25,96 @@ struct Node
 	}
 };
 
-int GetHeight(Node<int>* r)
-{
-	if (r == NULL)
-	{
-		return 0;
-	}
-	else
-	{
-		return r->height;
-	}
-}
-
-int max(int l, int r)
-{
-
-	if (l > r)
-	{
-		return l;
-	}
-	else
-	{
-		return r;
-	}
-}
-
-template<typename S>
-class AVL
+template<typename T>
+class AVLTree
 {
 public:
-
-	Node<S>* root;
+	AVLNode<T>* root;
 
 public:
 
-	AVL()
+	AVLTree()
 	{
 		root = NULL;
 	}
 
-	void InsertNode(Node<S> add)
+	void insert(AVLNode<T> add)
 	{
+		string data = add.value.filepath + "\n" + to_string(add.value.line);
+		add.value.nodepath = "BInID/node" + to_string(add.value.line) + ".txt";
+		saveNode("BInID/node" + to_string(add.value.line) + ".txt", data);
 		AVLinsert(add.value, root);
 	}
 
-	void DeleteNode(Node<S> del)
+	void DeleteNode(AVLNode<T> del)
 	{
 		AVLdelete(del.value, root);
 	}
 
-	Node<S>* SingleRightRotation(Node<S>*& temp)
+	AVLNode<T>* SingleRightRotation(AVLNode<T>*& temp)
 	{
-		Node<S>* temp1 = temp->left;
+		AVLNode<T>* temp1 = temp->left;
 		temp->left = temp1->right;
 
 		temp1->right = temp;
 
-		temp->height = max(GetHeight(temp->left), GetHeight(temp->right)) + 1;
-		temp1->height = max(GetHeight(temp1->left), temp->height) + 1;
+		temp->height = max(getHeight(temp->left), getHeight(temp->right)) + 1;
+		temp1->height = max(getHeight(temp1->left), temp->height) + 1;
 
 		return temp1;
 	}
 
-	Node<S>* SingleLeftRotation(Node<S>*& temp)
+	AVLNode<T>* SingleLeftRotation(AVLNode<T>*& temp)
 	{
 		//cout << temp->value << " " << temp->right->value << " " << temp->right->right->value << endl;
-		Node<S>* temp1 = temp->right;
+		AVLNode<T>* temp1 = temp->right;
 		//cout << temp1->value << endl;
 		temp->right = temp1->left;
 
 		temp1->left = temp;
 		//cout << temp1->left->value << " " << temp1->value << " " << temp1->right->value << endl;
 
-		temp->height = max(GetHeight(temp->left), GetHeight(temp->right)) + 1;
-		temp1->height = max(GetHeight(temp1->right), temp->height) + 1;
+		temp->height = max(getHeight(temp->left), getHeight(temp->right)) + 1;
+		temp1->height = max(getHeight(temp1->right), temp->height) + 1;
 
 
 		return temp1;
 	}
 
-	Node<S>* DoubleRightRotation(Node<S>*& temp)
+	AVLNode<T>* DoubleRightRotation(AVLNode<T>*& temp)
 	{
 		temp->left = SingleLeftRotation(temp->left);					//rotate left
 		return SingleRightRotation(temp);						//rotate right
 	}
 
-	Node<S>* DoubleLeftRotation(Node<S>*& temp)
+	AVLNode<T>* DoubleLeftRotation(AVLNode<T>*& temp)
 	{
 		temp->right = SingleRightRotation(temp->right);				//rotate right
 		return SingleLeftRotation(temp);						//rotate left
 	}
 
-	Node<S>* SmallestNodeValue(Node<S>*& temp) //reutrn value of smallest node in the given tree
+	AVLNode<T>* getMinNode(AVLNode<T>*& temp) //reutrn value of smallest node in the given tree
 	{
-		Node<S>* movernode = temp;
-
+		AVLNode<T>* movernode = temp;
 		while (movernode->left != NULL)
-		{
 			movernode = movernode->left;
-		}
 
 		return movernode;
 	}
 
-	int BalanceFactor(Node<S>* temp)
+	int BalanceFactor(AVLNode<T>* temp)
 	{
 		if (temp == NULL)
 			return 0;
 		else
-			return ((GetHeight(temp->left)) - (GetHeight(temp->right)));
+			return ((getHeight(temp->left)) - (getHeight(temp->right)));
 	}
 
-	Node<S>* AVLinsert(S val, Node<S>*& temp)
+	AVLNode<T>* AVLinsert(T val, AVLNode<T>*& temp)
 	{
 		if (temp == NULL)  // Create and return a single tree 
 		{
-			temp = new Node<S>;
+			temp = new AVLNode<T>;
 			temp->value = val;
 			temp->left = temp->right = NULL;
 		}
@@ -151,7 +127,7 @@ public:
 			temp->right = AVLinsert(val, temp->right);
 		} // If val is in the tree already; we'll do nothing as we don't create duplicates
 
-		temp->height = max(GetHeight(temp->left), GetHeight(temp->right)) + 1;
+		temp->height = max(getHeight(temp->left), getHeight(temp->right)) + 1;
 		int bf = BalanceFactor(temp); //checking balance factor for rotation if its not between -1 and 1
 
 		if (bf > 1 && val < temp->left->value) //RotateRight
@@ -178,7 +154,7 @@ public:
 		return temp;
 	}
 
-	Node<S>* AVLdelete(S val, Node<S>*& temp)
+	AVLNode<T>* AVLdelete(T val, AVLNode<T>*& temp)
 	{
 
 		if (temp == NULL)  // Base Case 
@@ -197,25 +173,25 @@ public:
 		{
 			if ((temp->left == NULL) && (temp->right == NULL)) //no child
 			{
-				Node<S>* tempnode = temp;
+				AVLNode<T>* tempnode = temp;
 				temp = temp->right;
 				delete tempnode;
 			}
 			else if ((temp->left == NULL) && (temp->right != NULL)) //one child on right
 			{
-				Node<S>* tempnode = temp;
+				AVLNode<T>* tempnode = temp;
 				temp = temp->right;
 				delete tempnode;
 			}
 			else if ((temp->right == NULL) && (temp->left != NULL)) //one child on left
 			{
-				Node<S>* tempnode = temp;
+				AVLNode<T>* tempnode = temp;
 				temp = temp->left;
 				delete tempnode;
 			}
 			else if ((temp->left != NULL) && (temp->right != NULL))//two children
 			{
-				Node<S>* tempnode = SmallestNodeValue(temp->right);
+				AVLNode<T>* tempnode = getMinNode(temp->right);
 				temp->value = tempnode->value;
 				temp->right = AVLdelete(tempnode->value, temp->right);
 			}
@@ -227,7 +203,7 @@ public:
 
 		//Same work as before, balancing tree and performing rotations but this time check the balance factors rather than values
 
-		temp->height = max(GetHeight(temp->left), GetHeight(temp->right)) + 1;
+		temp->height = max(getHeight(temp->left), getHeight(temp->right)) + 1;
 		int bf = BalanceFactor(temp); //checking balance factor for rotation if its not between -1 and 1
 
 		if ((bf > 1) && (BalanceFactor(temp->left) >= 0)) //RotateRight
@@ -253,7 +229,7 @@ public:
 		return temp;
 	}
 
-	void Inorder(Node<S>* temproot)
+	void Inorder(AVLNode<T>* temproot)
 	{
 		if (temproot != NULL)
 		{
@@ -261,5 +237,134 @@ public:
 			cout << temproot->value << " ";
 			Inorder(temproot->right);
 		}
+	}
+
+	void PreOrder(AVLNode<T>* _node)
+	{
+		if (_node != NULL)
+		{
+			cout << _node->value << " ";
+			PreOrder(_node->left);
+			PreOrder(_node->right);
+		}
+	}
+
+	void PostOrder(AVLNode<T>* _node)
+	{
+		if (_node != NULL)
+		{
+			PostOrder(_node->left);
+			PostOrder(_node->right);
+			cout << _node->value << " ";
+		}
+	}
+
+	void SingleLevel(AVLNode<T>* root, int _cLevel) {
+		if (root == NULL) {
+			return;
+		}
+		if (_cLevel == 1) {
+			cout << root->value << " ";
+		}
+		else if (_cLevel > 1) {
+			int newLevel = _cLevel - 1;
+			SingleLevel(root->left, newLevel);
+			SingleLevel(root->right, newLevel);
+		}
+	}
+
+	void LevelOrderTreversal(AVLNode<T>* begin) {
+		int h = getHeight(begin);
+		int i;
+		for (i = 1; i <= h; i++) {
+			SingleLevel(root, i);
+			cout << endl;
+		}
+	}
+
+	bool retrive(T _val) {
+		AVLNode<T>* start = root;
+		while (start != NULL) {
+			if (start->value == _val)
+				return true;
+			else if (start->value > _val)
+				start = start->left;
+			else
+				start = start->right;
+		}
+		return false;
+	}
+
+	int getHeight(AVLNode<T>* _node)
+	{
+		if (_node == NULL)
+			return 0;
+		else
+			return _node->height;
+	}
+
+	int max(int _left, int _right)
+	{
+
+		if (_left > _right)
+			return _left;
+		else
+			return _right;
+	}
+
+	Entry searchID(int id) {
+		AVLNode<T>* temp = root;
+		Entry ent;
+		if (root != NULL && id == root->value.id)
+		{
+			return ent;
+		}
+
+		else if (temp != NULL)
+		{
+			while (temp != NULL)
+			{
+				if (id == temp->value.id) {
+					ent = readLine(getPath(temp->value.nodepath), getLine(temp->value.nodepath));
+					return ent;
+				}
+				else if (id < temp->value.id) {
+					temp = temp->left;
+				}
+				else if (id > temp->value.id) {
+					temp = temp->right;
+				}
+			}
+
+		}
+		cout << "Not Found!" << endl;
+		return ent;
+	}
+
+	void getQuery(string query) {
+		string field;
+		string data;
+		int start = query.find("<");
+		int end = query.find(">");
+		start++;
+		field = query.substr(start, (end - start));
+		start = query.find('#');
+		end = query.length();
+		start++;
+		data = query.substr(start, (end - start));
+		data = fullTrim(data);
+		string dat = split(data, '=');
+		Entry ent = searchID(stoi(dat));
+
+		if (toLower(field) == "cause")
+			cout << ent.cause_name;
+		else if (toLower(field) == "year")
+			cout << ent.year;
+		else if (toLower(field) == "state")
+			cout << ent.state;
+		else if (toLower(field) == "deaths")
+			cout << ent.deaths;
+		else if (toLower(field) == "age-adjusted death rate")
+			cout << ent.death_rate;
 	}
 };
