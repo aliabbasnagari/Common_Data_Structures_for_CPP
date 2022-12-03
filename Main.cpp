@@ -38,7 +38,7 @@ int main() {
 	BTree<int> bree;
 		bree.traverse();
 	cout << endl;
-	q = readCSV("datafiles/test_data.csv");
+	q = readCSV("../Data_Structures/datafiles/test1.csv"); //only for me changed
 	q->show();
 
 	avl.LevelOrderTreversal(avl.root);
