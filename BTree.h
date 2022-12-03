@@ -40,10 +40,10 @@ template <typename T>
 class BTree {
 public:
     BTreeNode<T>* root;
-    int t;
+    T t;
 
 public:
-    BTree(int _t) {
+    BTree(T _t=0) {
         root = NULL;
         t = _t;
     }
