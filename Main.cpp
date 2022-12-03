@@ -4,10 +4,12 @@ Adnan Hayat
 Muhammad Wissam - 21I-0709
 */
 
-#include "RedBlackTree.h"
-#include "BTree.h"
-#include "LinkedList.h"
-#include "Utils.h"
+#include "../Data_structures/AVL.h"
+#include "../Data_structures/BTree.h"
+
+#include "../Data_structures/Utils.h"
+#include "../Data_structures/RedBlackTree.h"
+//#include "../Data_structures/BinarySearchTree.h"
 using namespace std;
 
 int main() {
@@ -20,6 +22,7 @@ int main() {
 	{
 		btreee.insertion(i);
 	}
+	//C:/user/4star/source/repos/Data_Structures/
 	btreee.traverse();
 	cout << endl;
 	q = readCSV("datafiles/test_data.csv");
