@@ -370,7 +370,6 @@ public:
 	}
 	void getQueryrange(string query) {
 		string field;
-		string ranger;
 		string data;
 		int start = query.find("<");
 		int end = query.find(">");
@@ -389,14 +388,20 @@ public:
 	}
 	void searchIDrange(int id, int id2,string field) {
 		AVLNode<T>* temp = root;
-		Entry *entt;
-		Entry ent;
-		entt = new Entry[id2 - id];
-
+		Entry entt;
 		for(int i=id; i<=id2;i++){
 		if (root != NULL && i == root->value.id)
 		{
-			return entt;
+			if (toLower(field) == "cause")
+				cout << entt.cause_name;
+			else if (toLower(field) == "year")
+				cout << entt.year;
+			else if (toLower(field) == "state")
+				cout << entt.state;
+			else if (toLower(field) == "deaths")
+				cout << entt.deaths;
+			else if (toLower(field) == "age-adjusted death rate")
+				cout << entt.death_rate;
 		}
 
 		else if (temp != NULL)
@@ -404,8 +409,17 @@ public:
 			while (temp != NULL)
 			{
 				if (i == temp->value.id) {
-					ent = readLine(getPath(temp->value.nodepath), getLine(temp->value.nodepath));
-					return entt;
+					entt = readLine(getPath(temp->value.nodepath), getLine(temp->value.nodepath));
+					if (toLower(field) == "cause")
+						cout << entt.cause_name;
+					else if (toLower(field) == "year")
+						cout << entt.year;
+					else if (toLower(field) == "state")
+						cout << entt.state;
+					else if (toLower(field) == "deaths")
+						cout << entt.deaths;
+					else if (toLower(field) == "age-adjusted death rate")
+						cout << entt.death_rate;
 				}
 				else if (i < temp->value.id) {
 					temp = temp->left;
@@ -414,20 +428,10 @@ public:
 					temp = temp->right;
 				}
 			}
-
 		}
-		if (toLower(field) == "cause")
-			cout << ent.cause_name;
-		else if (toLower(field) == "year")
-			cout << ent.year;
-		else if (toLower(field) == "state")
-			cout << ent.state;
-		else if (toLower(field) == "deaths")
-			cout << ent.deaths;
-		else if (toLower(field) == "age-adjusted death rate")
-			cout << ent.death_rate;
+	
 		}
 		cout << "Not Found!" << endl;
-		return entt;
+		
 	}
 };
