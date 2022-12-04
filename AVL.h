@@ -343,6 +343,7 @@ public:
 
 	void getQuery(string query) {
 		string field;
+		
 		string data;
 		int start = query.find("<");
 		int end = query.find(">");
@@ -354,8 +355,8 @@ public:
 		data = query.substr(start, (end - start));
 		data = fullTrim(data);
 		string dat = split(data, '=');
-		Entry ent = searchID(stoi(dat));
-
+		Entry ent = searchID(stoi(dat)); 
+		
 		if (toLower(field) == "cause")
 			cout << ent.cause_name;
 		else if (toLower(field) == "year")
@@ -366,5 +367,67 @@ public:
 			cout << ent.deaths;
 		else if (toLower(field) == "age-adjusted death rate")
 			cout << ent.death_rate;
+	}
+	void getQueryrange(string query) {
+		string field;
+		string ranger;
+		string data;
+		int start = query.find("<");
+		int end = query.find(">");
+		start++;
+		field = query.substr(start, (end - start));
+		start = query.find('#');
+		end = query.length();
+		start++;
+		data = query.substr(start, (end - start));
+		data = fullTrim(data);
+		string dat = split(data, '=');
+		string ranger = split(dat, '-'); // I added this line
+		 searchIDrange(stoi(dat),stoi(ranger),field); //I modified this line
+		  // I added this line
+		
+	}
+	void searchIDrange(int id, int id2,string field) {
+		AVLNode<T>* temp = root;
+		Entry *entt;
+		Entry ent;
+		entt = new Entry[id2 - id];
+
+		for(int i=id; i<=id2;i++){
+		if (root != NULL && i == root->value.id)
+		{
+			return entt;
+		}
+
+		else if (temp != NULL)
+		{
+			while (temp != NULL)
+			{
+				if (i == temp->value.id) {
+					ent = readLine(getPath(temp->value.nodepath), getLine(temp->value.nodepath));
+					return entt;
+				}
+				else if (i < temp->value.id) {
+					temp = temp->left;
+				}
+				else if (i > temp->value.id) {
+					temp = temp->right;
+				}
+			}
+
+		}
+		if (toLower(field) == "cause")
+			cout << ent.cause_name;
+		else if (toLower(field) == "year")
+			cout << ent.year;
+		else if (toLower(field) == "state")
+			cout << ent.state;
+		else if (toLower(field) == "deaths")
+			cout << ent.deaths;
+		else if (toLower(field) == "age-adjusted death rate")
+			cout << ent.death_rate;
+		}
+		cout << "Not Found!" << endl;
+		return entt;
 	}
 };
