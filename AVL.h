@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include <sstream>
 #include "Utils.h"
 using namespace std;
 
@@ -317,6 +318,7 @@ public:
 		Entry ent;
 		if (root != NULL && id == root->value.id)
 		{
+			ent = readLine(getPath(root->value.nodepath), getLine(root->value.nodepath));
 			return ent;
 		}
 
@@ -343,7 +345,6 @@ public:
 
 	void getQuery(string query) {
 		string field;
-		
 		string data;
 		int start = query.find("<");
 		int end = query.find(">");
@@ -356,17 +357,21 @@ public:
 		data = fullTrim(data);
 		string dat = split(data, '=');
 		Entry ent = searchID(stoi(dat)); 
-		
-		if (toLower(field) == "cause")
-			cout << ent.cause_name;
-		else if (toLower(field) == "year")
-			cout << ent.year;
-		else if (toLower(field) == "state")
-			cout << ent.state;
-		else if (toLower(field) == "deaths")
-			cout << ent.deaths;
-		else if (toLower(field) == "age-adjusted death rate")
-			cout << ent.death_rate;
+
+		stringstream fields(field);
+		while (!fields.eof()) {
+			getline(fields, field, ',');
+			if (toLower(field) == "cause")
+				cout << " , " << ent.cause_name ;
+			else if (toLower(field) == "year")
+				cout << " , " << ent.year ;
+			else if (toLower(field) == "state")
+				cout << " , " << ent.state ;
+			else if (toLower(field) == "deaths")
+				cout << " , " << ent.deaths ;
+			else if (toLower(field) == "age-adjusted death rate")
+				cout << " , " << ent.death_rate ;
+		}
 	}
 	void getQueryrange(string query) {
 		string field;
@@ -387,51 +392,26 @@ public:
 		
 	}
 	void searchIDrange(int id, int id2,string field) {
-		AVLNode<T>* temp = root;
-		Entry entt;
-		for(int i=id; i<=id2;i++){
-		if (root != NULL && i == root->value.id)
+		string newField = field;
+		Entry ent;
+		for (int i = id; i <=id2; i++)
 		{
-			if (toLower(field) == "cause")
-				cout << entt.cause_name;
-			else if (toLower(field) == "year")
-				cout << entt.year;
-			else if (toLower(field) == "state")
-				cout << entt.state;
-			else if (toLower(field) == "deaths")
-				cout << entt.deaths;
-			else if (toLower(field) == "age-adjusted death rate")
-				cout << entt.death_rate;
-		}
-
-		else if (temp != NULL)
-		{
-			while (temp != NULL)
-			{
-				if (i == temp->value.id) {
-					entt = readLine(getPath(temp->value.nodepath), getLine(temp->value.nodepath));
-					if (toLower(field) == "cause")
-						cout << entt.cause_name;
-					else if (toLower(field) == "year")
-						cout << entt.year;
-					else if (toLower(field) == "state")
-						cout << entt.state;
-					else if (toLower(field) == "deaths")
-						cout << entt.deaths;
-					else if (toLower(field) == "age-adjusted death rate")
-						cout << entt.death_rate;
-				}
-				else if (i < temp->value.id) {
-					temp = temp->left;
-				}
-				else if (i > temp->value.id) {
-					temp = temp->right;
-				}
+			ent = searchID(i);
+			stringstream fields(field);
+			while (!fields.eof()) {
+				getline(fields, newField, ',');
+				if (toLower(newField) == "cause")
+					cout << " , " << ent.cause_name ;
+				else if (toLower(newField) == "year")
+					cout << " , " << ent.year;
+				else if (toLower(newField) == "state")
+					cout << " , " << ent.state ;
+				else if (toLower(newField) == "deaths")
+					cout << " , " << ent.deaths ;
+				else if (toLower(newField) == "age-adjusted death rate")
+					cout << " , " << ent.death_rate ;
 			}
+			cout << endl;
 		}
-	
-		}
-		cout << "Not Found!" << endl;
-		
 	}
 };
