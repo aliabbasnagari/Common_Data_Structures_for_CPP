@@ -35,7 +35,7 @@ int main() {
 	//q->show();
 
 	avl.LevelOrderTreversal(avl.root);
-	avl.getQueryrange("get <year,state,deaths> with # id=15-20");
+	avl.getQueryrange("get <year,state,deaths> with # year=2016");
 
 	return 0;
 }
