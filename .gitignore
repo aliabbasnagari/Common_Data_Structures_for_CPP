@@ -6,3 +6,4 @@
 *.sln
 .vs/
 x64/
+backup/

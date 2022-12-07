@@ -4,7 +4,7 @@ Adnan Hayat
 Muhammad Wissam - 21I-0709
 */
 
-
+#include "BTree.h"
 #include "AVL.h"
 #include "Header.h"
 #include "Utils.h"
@@ -27,15 +27,9 @@ int main() {
 		q->dequeue();
 	}
 
-	//C:/user/4star/source/repos/Data_Structures/
-	/*BTree<int> bree;
-		bree.traverse();*/
-	//cout << endl;
-	//q = readCSV("../Data_Structures/datafiles/test2.csv"); //only for me changed
-	//q->show();
-
 	avl.LevelOrderTreversal(avl.root);
 	avl.getQueryrange("get <year,state,deaths> with # id=15-20");
+	avl.getQuery("get <state> with # id=15");
 
 	return 0;
 }
