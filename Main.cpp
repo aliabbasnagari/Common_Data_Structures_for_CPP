@@ -27,9 +27,9 @@ int main() {
 		q->dequeue();
 	}
 
-	avl.LevelOrderTreversal(avl.root);
+	// avl.LevelOrderTreversal(avl.root);
 	avl.getQueryrange("get <year,state,deaths> with # id=15-20");
-	avl.getQuery("get <state> with # id=15");
+	avl.getQuery("get <state> with # id=18");
 
 	return 0;
 }
