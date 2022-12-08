@@ -16,6 +16,10 @@ int main() {
 	Queue<Entry>* q;
 	q= readCSV(path);
 	AVLTree<DataNode> avl;
+	AVLTree<DataNode> avlname;
+	avl.key = "ID";
+	avlname.key = "STATE";
+	BTree<DataNode> btree(4);
 	int len = q->Size();
 	for (int i = 0; i < len; i++)
 	{
@@ -23,13 +27,29 @@ int main() {
 		node.filepath = path;
 		node.id = q->Front().getId();
 		node.line = (i + 1);
+		btree.insert(node);
 		avl.insert(node);
+		node.filepath = path;
+		node.id = int_of_str(q->Front().state);
+		node.line = (i + 1);
+		avlname.insert(node);
 		q->dequeue();
 	}
-
+	cout << endl << endl;
 	// avl.LevelOrderTreversal(avl.root);
-	avl.getQueryrange("get <year,state,deaths> with # id=15-20");
-	avl.getQuery("get <state> with # id=18");
+	cout << "Range Search: \n";
+	avl.getQueryrange("get <year,state,deaths> where # id=15-20");
+	cout << "Single Search: \n";
+	avl.getQuery("get <state> where # id=18");
+	cout << "\nString Search: \n";
+	avlname.getQuery("get <id> where # state=Indiana");
+
+
+	//Testing for B-Tree
+	cout << endl << "B-Tree: " << endl;
+	btree.traverse();
+
+
 
 	return 0;
 }

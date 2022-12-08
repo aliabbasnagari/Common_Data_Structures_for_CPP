@@ -87,6 +87,6 @@ int Entry::getYear() {
 
 ostream& operator<<(ostream& out, const Entry& ent)
 {
-	cout << ent.id << " - " << ent.year << " - " << ent.cause_name << " - " << ent.deaths << endl;
+	out << ent.id << "," << ent.year << "," << ent.cause_name_113 << "," << ent.cause_name << "," << ent.state << "," << ent.deaths << "," << ent.death_rate << endl;
 	return out;
 }

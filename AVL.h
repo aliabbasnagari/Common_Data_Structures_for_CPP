@@ -17,12 +17,14 @@ public:
 	{
 		left = NULL;
 		right = NULL;
+		height = 0;
 	}
 	AVLNode(T n)
 	{
 		value = n;
 		left = NULL;
 		right = NULL;
+		height = 0;
 	}
 };
 
@@ -31,7 +33,7 @@ class AVLTree
 {
 public:
 	AVLNode<T>* root;
-
+	string key;
 public:
 
 	AVLTree()
@@ -42,8 +44,9 @@ public:
 	void insert(AVLNode<T> add)
 	{
 		string data = add.value.filepath + "\n" + to_string(add.value.line);
-		add.value.nodepath = "BInID/node" + to_string(add.value.line) + ".txt";
-		saveNode("BInID/node" + to_string(add.value.line) + ".txt", data);
+		string node_path = "AVL_" + key + "/node" + to_string(add.value.id) + ".txt";
+		add.value.nodepath = node_path;
+		saveNode(node_path, data);
 		AVLinsert(add.value, root);
 	}
 
@@ -306,7 +309,6 @@ public:
 
 	int max(int _left, int _right)
 	{
-
 		if (_left > _right)
 			return _left;
 		else
@@ -345,7 +347,7 @@ public:
 
 	void getQuery(string query) {
 		string field;
-		string data;
+		string key_data;
 		int start = query.find("<");
 		int end = query.find(">");
 		start++;
@@ -353,26 +355,35 @@ public:
 		start = query.find('#');
 		end = query.length();
 		start++;
-		data = query.substr(start, (end - start));
-		data = fullTrim(data);
-		string dat = split(data, '=');
-		Entry ent = searchID(stoi(dat)); 
+		key_data = query.substr(start, (end - start));
+		key_data = fullTrim(key_data);
+		string key_value = split(key_data, '=');
+		int sid = 0;
+		if (key == "ID")
+			sid = stoi(key_value);
+		else
+			sid = int_of_str(key_value);
+
+		Entry ent = searchID(sid);
 
 		stringstream fields(field);
 		while (!fields.eof()) {
 			getline(fields, field, ',');
-			if (toLower(field) == "cause")
-				cout << " , " << ent.cause_name ;
+			if (toLower(field) == "id")
+				cout << "Id = " << ent.id << endl;
 			else if (toLower(field) == "year")
-				cout << " , " << ent.year ;
+				cout << "Year = " << ent.year << endl;
+			if (toLower(field) == "cause")
+				cout << "Cause = " << ent.cause_name << endl;
 			else if (toLower(field) == "state")
-				cout << " , " << ent.state ;
+				cout << "State = " << ent.state << endl;
 			else if (toLower(field) == "deaths")
-				cout << " , " << ent.deaths ;
+				cout << "Deaths = " << ent.deaths << endl;
 			else if (toLower(field) == "age-adjusted death rate")
-				cout << " , " << ent.death_rate ;
+				cout << "Age-adjusted Death Rate = " << ent.death_rate << endl;
 		}
 	}
+
 	void getQueryrange(string query) {
 		string field;
 		string data;
@@ -391,6 +402,7 @@ public:
 		  // I added this line
 		
 	}
+
 	void searchIDrange(int id, int id2,string field) {
 		string newField = field;
 		Entry ent;
@@ -400,16 +412,18 @@ public:
 			stringstream fields(field);
 			while (!fields.eof()) {
 				getline(fields, newField, ',');
-				if (toLower(newField) == "cause")
-					cout << " , " << ent.cause_name ;
+				if (toLower(newField) == "id")
+					cout << "Id = " << ent.id << endl;
 				else if (toLower(newField) == "year")
-					cout << " , " << ent.year;
+					cout << "Year = " << ent.year << endl;
+				if (toLower(newField) == "cause")
+					cout << "Cause = " << ent.cause_name << endl;
 				else if (toLower(newField) == "state")
-					cout << " , " << ent.state ;
+					cout << "State = " << ent.state << endl;
 				else if (toLower(newField) == "deaths")
-					cout << " , " << ent.deaths ;
+					cout << "Deaths = " << ent.deaths << endl;
 				else if (toLower(newField) == "age-adjusted death rate")
-					cout << " , " << ent.death_rate ;
+					cout << "Age-adjusted Death Rate = " << ent.death_rate << endl;
 			}
 			cout << endl;
 		}
