@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 #include <direct.h>
-#include "Utils.h"
 #include "Queue.h"
 #include "Entry.h"
 #include "Header.h"
@@ -19,7 +18,8 @@ struct KeyVal
 	KeyVal* right;
 };
 
-int int_of_str(string val) {
+int int_of_str(string val)
+{
 	int int_rep = 0;
 	for (int i = 0; i < val.length(); i++)
 		int_rep += (val[i] * i);
@@ -27,18 +27,17 @@ int int_of_str(string val) {
 	return int_rep;
 }
 
-Queue<Entry>* readCSV(string path) {
+Queue<Entry>* readCSV(string path)
+{
 	Entry obj;
 	Queue<Entry>* q = new Queue<Entry>;
 	string val = "";
 	// File Handling
 	fstream data_file;
 	data_file.open(path, ios::in);
-	if (data_file.good())
-	{
+	if (data_file.good()) {
 		getline(data_file, val);
-		while (!data_file.eof())
-		{
+		while (!data_file.eof()) {
 			string temp = "";
 			int id;
 			int year;
@@ -49,8 +48,7 @@ Queue<Entry>* readCSV(string path) {
 			string state = "";
 
 			getline(data_file, temp, ',');
-			if (temp != "")
-			{
+			if (temp != "") {
 				id = stoi(temp);
 				//cout << "< " << id << " >" << endl;
 
@@ -105,38 +103,52 @@ Queue<Entry>* readCSV(string path) {
 	return q;
 }
 
-void saveNode(string folder, string file, string data) {
+void saveNode(string folder, string file, FileNode data)
+{
+	bool found = false;
 	string val = "";
 	string root = "database/";
 	// File Handling
 	fstream data_file;
-	data_file.open(root + folder + "/" + file, ios::out);
-	if (data_file.good())
-	{
-		data_file << data << endl;
+	data_file.open(root + folder + "/" + file, ios::in);
+	if (data_file.good()) {
+		FileNode f_node;
+		while (!data_file.eof()) {
+			data_file >> f_node;
+			if (f_node == data) {
+				found = true;
+				break;
+			}
+		}
+		data_file.close();
 	}
-	else {
-		_mkdir((root + folder).c_str());
-		data_file.open(root + folder + "/" + file, ios::out);
-		if (data_file.good())
-		{
-			data_file << data << endl;
+	if (!found) {
+		data_file.open(root + folder + "/" + file, ios::app);
+		if (data_file.good()) {
+			data_file << data.node_path << endl;
+			data_file << data.line << endl;
+		} else {
+			int dir = _mkdir((root + folder).c_str());
+			data_file.open(root + folder + "/" + file,ios::app);
+			if (data_file.good()) {
+				data_file << data.node_path << endl;
+				data_file << data.line << endl;
+			}
 		}
 	}
 	data_file.close();
 }
 
-Entry readLine(string path, int line) {
+Entry readLine(string path, int line)
+{
 	string val = "";
 	Entry obj;
 	// File Handling
 	fstream data_file;
 	data_file.open(path, ios::in);
 	int curr_line = 0;
-	if (data_file.good())
-	{
-		while (!data_file.eof() && curr_line <= line)
-		{
+	if (data_file.good()) {
+		while (!data_file.eof() && curr_line <= line) {
 			string temp = "";
 			int id = 0;
 			int year = 0;
@@ -147,7 +159,7 @@ Entry readLine(string path, int line) {
 			string state = "";
 
 			getline(data_file, temp, ',');
-			if (temp !="ID" && temp != " " && temp != "")
+			if (temp != "ID" && temp != " " && temp != "")
 				id = stoi(temp);
 			getline(data_file, temp, ',');
 			if (temp != "Year" && temp != " " && temp != "")
@@ -190,83 +202,86 @@ Entry readLine(string path, int line) {
 	return obj;
 }
 
-string getPath(string path) {
-		string val = "";
-		fstream data_file;
-		data_file.open(path, ios::in);
-		if (data_file.good())
-			getline(data_file, val);
-		data_file.close();
-		return val;
-	}
+string getPath(string path)
+{
+	string val = "";
+	fstream data_file;
+	data_file.open(path, ios::in);
+	if (data_file.good())
+		getline(data_file, val);
+	data_file.close();
+	return val;
+}
 
-int getLine(string path) {
-		string val = "";
-		fstream data_file;
-		data_file.open(path, ios::in);
-		if (data_file.good())
-		{
-			getline(data_file, val);
-			getline(data_file, val);
-		}
-		data_file.close();
-		return stoi(val);
+int getLine(string path)
+{
+	string val = "";
+	fstream data_file;
+	data_file.open(path, ios::in);
+	if (data_file.good()) {
+		getline(data_file, val);
+		getline(data_file, val);
 	}
+	data_file.close();
+	return stoi(val);
+}
 
-string split(string& str, char sep) {
-		int currentIndex = 0, i = 0, j = 0;
-		int startIndex = 0, endIndex = 0;
-		string subStr = "";
-		while (str[i] != sep)
-			i++;
-		j = i;
+string split(string& str, char sep)
+{
+	int currentIndex = 0, i = 0, j = 0;
+	int startIndex = 0, endIndex = 0;
+	string subStr = "";
+	while (str[i] != sep)
 		i++;
-		while (i < str.length())
-		{
-			subStr += str[i];
-			i++;
-		}
-		str.erase(j, str.length());
-		return subStr;
+	j = i;
+	i++;
+	while (i < str.length()) {
+		subStr += str[i];
+		i++;
 	}
+	str.erase(j, str.length());
+	return subStr;
+}
 
 // Helping functions
 // Trim extra spaces from starting of a string
-string trim(string text) {
-		int begin = 0;
-		while (text[begin] == 10 || text[begin] == 9 || text[begin] == ' ')
-			begin++;
-		text.erase(0, begin);
-		return text;
-	}
+string trim(string text)
+{
+	int begin = 0;
+	while (text[begin] == 10 || text[begin] == 9 || text[begin] == ' ')
+		begin++;
+	text.erase(0, begin);
+	return text;
+}
 
 // Trim extra spaces from both ends of a string
-string fullTrim(string text) {
-		int begin = 0;
-		while (text[begin] == 9 || text[begin] == ' ')
-			begin++;
-		text.erase(0, begin);
-		begin = text.length() - 1;
-		while (text[begin] == 9 || text[begin] == ' ')
-			begin--;
-		text.erase(begin + 1, text.length() - 1);
-		return text;
-	}
+string fullTrim(string text)
+{
+	int begin = 0;
+	while (text[begin] == 9 || text[begin] == ' ')
+		begin++;
+	text.erase(0, begin);
+	begin = text.length() - 1;
+	while (text[begin] == 9 || text[begin] == ' ')
+		begin--;
+	text.erase(begin + 1, text.length() - 1);
+	return text;
+}
 
-string toLower(string word) {
-		string out = "";
-		for (int i = 0; i < word.length(); i++)
-		{
-			out += tolower(word[i]);
-		}
-		return out;
+string toLower(string word)
+{
+	string out = "";
+	for (int i = 0; i < word.length(); i++) {
+		out += tolower(word[i]);
 	}
+	return out;
+}
 
-bool insertToFile(string path, Entry ent) {
+bool insertToFile(string path, Entry ent)
+{
 	fstream data_file;
 	data_file.open(path, ios::app);
-	if (data_file.good())
-	{
+	if (data_file.good()) {
 		data_file << ent;
 		data_file.close();
 		return true;

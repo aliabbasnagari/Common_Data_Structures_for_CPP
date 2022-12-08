@@ -2,6 +2,7 @@
 #include<iostream>
 #include <sstream>
 #include "Utils.h"
+#include "Header.h"
 using namespace std;
 
 template<typename T>
@@ -43,11 +44,11 @@ public:
 
 	void insert(AVLNode<T> add)
 	{
-		string data = add.value.filepath + "\n" + to_string(add.value.line);
+		FileNode node(add.value.filepath, add.value.line);
 		string folder = "AVL_" + key;
 		string file = "node" + to_string(add.value.id) + ".txt";
 		add.value.nodepath = "database/" + folder + "/" + file;
-		saveNode(folder, file, data);
+		saveNode(folder, file, node);
 		AVLinsert(add.value, root);
 	}
 

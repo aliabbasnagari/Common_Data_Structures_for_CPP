@@ -38,7 +38,7 @@ int main() {
 	cout << endl << endl;
 	// avl.LevelOrderTreversal(avl.root);
 	cout << "Range Search: \n";
-	avl.getQueryrange("get <year,state,deaths> where # id=15-20");
+	//avl.getQueryrange("get <year,state,deaths> where # id=15-20");
 	cout << "Single Search: \n";
 	avl.getQuery("get <state> where # id=18");
 	cout << "\nString Search: \n";
