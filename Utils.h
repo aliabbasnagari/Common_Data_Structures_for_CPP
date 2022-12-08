@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <direct.h>
+#include "Utils.h"
 #include "Queue.h"
 #include "Entry.h"
 #include "Header.h"
@@ -103,14 +105,23 @@ Queue<Entry>* readCSV(string path) {
 	return q;
 }
 
-void saveNode(string path, string data) {
+void saveNode(string folder, string file, string data) {
 	string val = "";
+	string root = "database/";
 	// File Handling
 	fstream data_file;
-	data_file.open(path, ios::out);
+	data_file.open(root + folder + "/" + file, ios::out);
 	if (data_file.good())
 	{
 		data_file << data << endl;
+	}
+	else {
+		_mkdir((root + folder).c_str());
+		data_file.open(root + folder + "/" + file, ios::out);
+		if (data_file.good())
+		{
+			data_file << data << endl;
+		}
 	}
 	data_file.close();
 }

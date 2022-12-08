@@ -44,9 +44,10 @@ public:
 	void insert(AVLNode<T> add)
 	{
 		string data = add.value.filepath + "\n" + to_string(add.value.line);
-		string node_path = "AVL_" + key + "/node" + to_string(add.value.id) + ".txt";
-		add.value.nodepath = node_path;
-		saveNode(node_path, data);
+		string folder = "AVL_" + key;
+		string file = "node" + to_string(add.value.id) + ".txt";
+		add.value.nodepath = "database/" + folder + "/" + file;
+		saveNode(folder, file, data);
 		AVLinsert(add.value, root);
 	}
 
