@@ -17,6 +17,14 @@ struct KeyVal
 	KeyVal* right;
 };
 
+int int_of_str(string val) {
+	int int_rep = 0;
+	for (int i = 0; i < val.length(); i++)
+		int_rep += (val[i] * i);
+
+	return int_rep;
+}
+
 Queue<Entry>* readCSV(string path) {
 	Entry obj;
 	Queue<Entry>* q = new Queue<Entry>;
@@ -167,21 +175,21 @@ Entry readLine(string path, int line) {
 			curr_line++;
 		}
 	}
+	data_file.close();
 	return obj;
 }
 
-	string getPath(string path) {
+string getPath(string path) {
 		string val = "";
 		fstream data_file;
 		data_file.open(path, ios::in);
 		if (data_file.good())
-		{
 			getline(data_file, val);
-		}
+		data_file.close();
 		return val;
 	}
 
-	int getLine(string path) {
+int getLine(string path) {
 		string val = "";
 		fstream data_file;
 		data_file.open(path, ios::in);
@@ -190,9 +198,11 @@ Entry readLine(string path, int line) {
 			getline(data_file, val);
 			getline(data_file, val);
 		}
+		data_file.close();
 		return stoi(val);
 	}
-	string split(string& str, char sep) {
+
+string split(string& str, char sep) {
 		int currentIndex = 0, i = 0, j = 0;
 		int startIndex = 0, endIndex = 0;
 		string subStr = "";
@@ -209,9 +219,9 @@ Entry readLine(string path, int line) {
 		return subStr;
 	}
 
-	// Helping functions
-	// Trim extra spaces from starting of a string
-	string trim(string text) {
+// Helping functions
+// Trim extra spaces from starting of a string
+string trim(string text) {
 		int begin = 0;
 		while (text[begin] == 10 || text[begin] == 9 || text[begin] == ' ')
 			begin++;
@@ -219,8 +229,8 @@ Entry readLine(string path, int line) {
 		return text;
 	}
 
-	// Trim extra spaces from both ends of a string
-	string fullTrim(string text) {
+// Trim extra spaces from both ends of a string
+string fullTrim(string text) {
 		int begin = 0;
 		while (text[begin] == 9 || text[begin] == ' ')
 			begin++;
@@ -232,7 +242,7 @@ Entry readLine(string path, int line) {
 		return text;
 	}
 
-	string toLower(string word) {
+string toLower(string word) {
 		string out = "";
 		for (int i = 0; i < word.length(); i++)
 		{
@@ -240,3 +250,16 @@ Entry readLine(string path, int line) {
 		}
 		return out;
 	}
+
+bool insertToFile(string path, Entry ent) {
+	fstream data_file;
+	data_file.open(path, ios::app);
+	if (data_file.good())
+	{
+		data_file << ent;
+		data_file.close();
+		return true;
+	}
+	data_file.close();
+	return false;
+}
