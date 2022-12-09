@@ -30,6 +30,7 @@ public:
 	string getCause();
 	string getState();
 	string getCause113();
+	bool operator==(Entry&);
 	friend ostream& operator<<(ostream& output, const Entry&);
 };
 
@@ -43,6 +44,11 @@ Entry::Entry(int _id = 0, int _yr = 0, string _cn = "", string _cn1 = "", string
 	deaths = _dt;
 	death_rate = _dr;
 };
+
+bool Entry::operator==(Entry& ent)
+{
+	return (id == ent.id && year == ent.year && cause_name_113 == ent.cause_name_113 && cause_name == ent.cause_name && state == ent.state && deaths == ent.deaths && death_rate == ent.death_rate);
+}
 
 void Entry::setId(int xd)
 {

@@ -345,23 +345,26 @@ public:
 		else
 			sid = int_of_str(key_value);
 
-		LinkedList<Entry>* ent = searchID(sid);
+		LinkedList<Entry>* ent_list = searchID(sid);
 
-		stringstream fields(field);
-		while (!fields.eof()) {
-			getline(fields, field, ',');
-			if (toLower(field) == "id")
-				cout << "Id = " << ent.id << endl;
-			else if (toLower(field) == "year")
-				cout << "Year = " << ent.year << endl;
-			if (toLower(field) == "cause")
-				cout << "Cause = " << ent.cause_name << endl;
-			else if (toLower(field) == "state")
-				cout << "State = " << ent.state << endl;
-			else if (toLower(field) == "deaths")
-				cout << "Deaths = " << ent.deaths << endl;
-			else if (toLower(field) == "age-adjusted death rate")
-				cout << "Age-adjusted Death Rate = " << ent.death_rate << endl;
+		for (int i = 0; i < ent_list->Size(); i++) {
+			Node<Entry>* temp = ent_list->atIndex(i);
+			stringstream fields(field);
+			while (!fields.eof()) {
+				getline(fields, field, ',');
+				if (toLower(field) == "id")
+					cout << "Id = " << temp->getValue().id << endl;
+				else if (toLower(field) == "year")
+					cout << "Year = " << temp->getValue().year << endl;
+				if (toLower(field) == "cause")
+					cout << "Cause = " << temp->getValue().cause_name << endl;
+				else if (toLower(field) == "state")
+					cout << "State = " << temp->getValue().state << endl;
+				else if (toLower(field) == "deaths")
+					cout << "Deaths = " << temp->getValue().deaths << endl;
+				else if (toLower(field) == "age-adjusted death rate")
+					cout << "Age-adjusted Death Rate = " << temp->getValue().death_rate << endl;
+			}
 		}
 	}
 
