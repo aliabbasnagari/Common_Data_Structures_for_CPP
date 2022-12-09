@@ -1,22 +1,16 @@
 #pragma once
+#ifndef UTILS_H
+#define UTILS_H
 /* All Utility Functions */
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <direct.h>
 #include "Queue.h"
+#include "LinkedList.h"
 #include "Entry.h"
 #include "Header.h"
 using namespace std;
-
-struct KeyVal
-{
-	int id;
-	string path;
-	int line;
-	KeyVal* left;
-	KeyVal* right;
-};
 
 int int_of_str(string val)
 {
@@ -289,3 +283,29 @@ bool insertToFile(string path, Entry ent)
 	data_file.close();
 	return false;
 }
+
+LinkedList<Entry>* readFromNode(string path)
+{
+	LinkedList<Entry>* list = new LinkedList<Entry>;
+	string val = "";
+	Entry obj;
+	fstream node_file;
+	node_file.open(path, ios::in);
+	if (node_file.good()) {
+		while (!node_file.eof()) {
+			string line_path = "";
+			string lno = "";
+			int line_no = -1;
+			getline(node_file, line_path);
+			getline(node_file, lno);
+			if (line_path != "" && lno != "" && line_path != " " && lno != " ") {
+				line_no = stoi(lno);
+				obj = readLine(line_path, line_no);
+				list->insert(obj);
+			}
+		}
+	}
+	node_file.close();
+	return list;
+}
+#endif // !UTILS_H

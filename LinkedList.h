@@ -219,6 +219,16 @@ public:
 		cout << " ]";
 	}
 
+	void display() const
+	{
+		Node<T>* curr = head;
+		while (curr->getNext() != NULL) {
+			cout << curr->getValue();
+			curr = curr->getNext();
+		}
+		cout << curr->getValue();
+	}
+
 	~LinkedList() {
 		Node<T>* curr = head;
 		while (curr->getNext() != NULL)

@@ -1,8 +1,9 @@
 #pragma once
+#ifndef AVL_H
+#define AVL_H
 #include<iostream>
 #include <sstream>
 #include "Utils.h"
-#include "Header.h"
 using namespace std;
 
 template<typename T>
@@ -123,13 +124,9 @@ public:
 			temp = new AVLNode<T>;
 			temp->value = val;
 			temp->left = temp->right = NULL;
-		}
-		else if (val < temp->value)
-		{
+		} else if (val < temp->value) {
 			temp->left = AVLinsert(val, temp->left);
-		}
-		else if (val > temp->value)
-		{
+		} else if (val > temp->value) {
 			temp->right = AVLinsert(val, temp->right);
 		} // If val is in the tree already; we'll do nothing as we don't create duplicates
 
@@ -139,19 +136,16 @@ public:
 		if (bf > 1 && val < temp->left->value) //RotateRight
 		{
 			temp = SingleRightRotation(temp);
-		}
-		else if (bf < -1 && val > temp->right->value) //RotateLeft
+		} else if (bf < -1 && val > temp->right->value) //RotateLeft
 		{
 			//cout << "BEFORE ROTATION RIGHT RIGHT RIGHT: " << temp->value << " " << temp->right->value << " " << temp->right->right->value << endl;
 			temp = SingleLeftRotation(temp);
 			//cout << "AFTER ROTATION LEFT CENTER RIGHT: " <<temp->left->value << " " << temp->value << " " << temp->right->value << endl;
-		}
-		else if (bf > 1 && val > temp->left->value) //DoubleRotateRight A.K.A RIGHT-LEFT ROTATION FIRST LEFT THEN RIGHT
+		} else if (bf > 1 && val > temp->left->value) //DoubleRotateRight A.K.A RIGHT-LEFT ROTATION FIRST LEFT THEN RIGHT
 		{
 			temp = DoubleRightRotation(temp);
 			//cout << temp->left->value << " " << temp->value << " " << temp->right->value << endl;
-		}
-		else if (bf < -1 && val < temp->right->value) //DoubleRotateLeft A.K.A LEFT-RIGHT ROTATION FIRST RIGHT THEN LEFT
+		} else if (bf < -1 && val < temp->right->value) //DoubleRotateLeft A.K.A LEFT-RIGHT ROTATION FIRST RIGHT THEN LEFT
 		{
 			temp = DoubleLeftRotation(temp);
 			//cout << temp->left->value << " " << temp->value << " " << temp->right->value << endl;
@@ -166,36 +160,30 @@ public:
 		if (temp == NULL)  // Base Case 
 		{
 			return temp;
-		}
-		else if (val < temp->value) //go left
+		} else if (val < temp->value) //go left
 		{
 			temp->left = AVLdelete(val, temp->left);
-		}
-		else if (val > temp->value) //go right
+		} else if (val > temp->value) //go right
 		{
 			temp->right = AVLdelete(val, temp->right);
-		} 
-		else //value matches so perform deleteion
+		} else //value matches so perform deleteion
 		{
 			if ((temp->left == NULL) && (temp->right == NULL)) //no child
 			{
 				AVLNode<T>* tempnode = temp;
 				temp = temp->right;
 				delete tempnode;
-			}
-			else if ((temp->left == NULL) && (temp->right != NULL)) //one child on right
+			} else if ((temp->left == NULL) && (temp->right != NULL)) //one child on right
 			{
 				AVLNode<T>* tempnode = temp;
 				temp = temp->right;
 				delete tempnode;
-			}
-			else if ((temp->right == NULL) && (temp->left != NULL)) //one child on left
+			} else if ((temp->right == NULL) && (temp->left != NULL)) //one child on left
 			{
 				AVLNode<T>* tempnode = temp;
 				temp = temp->left;
 				delete tempnode;
-			}
-			else if ((temp->left != NULL) && (temp->right != NULL))//two children
+			} else if ((temp->left != NULL) && (temp->right != NULL))//two children
 			{
 				AVLNode<T>* tempnode = getMinNode(temp->right);
 				temp->value = tempnode->value;
@@ -215,18 +203,15 @@ public:
 		if ((bf > 1) && (BalanceFactor(temp->left) >= 0)) //RotateRight
 		{
 			temp = SingleRightRotation(temp);
-		}
-		else if ((bf < -1) && (BalanceFactor(temp->right) <= 0)) //RotateLeft
+		} else if ((bf < -1) && (BalanceFactor(temp->right) <= 0)) //RotateLeft
 		{
 			temp = SingleLeftRotation(temp);
 			//cout << "AFTER ROTATION LEFT CENTER RIGHT: " <<temp->left->value << " " << temp->value << " " << temp->right->value << endl;
-		}
-		else if ((bf < -1) && (BalanceFactor(temp->right) > 0)) //DoubleRotateRight A.K.A RIGHT-LEFT ROTATION FIRST LEFT THEN RIGHT
+		} else if ((bf < -1) && (BalanceFactor(temp->right) > 0)) //DoubleRotateRight A.K.A RIGHT-LEFT ROTATION FIRST LEFT THEN RIGHT
 		{
 			temp = DoubleRightRotation(temp);
 			//cout << temp->left->value << " " << temp->value << " " << temp->right->value << endl;
-		}
-		else if ((bf > 1) && (BalanceFactor(temp->left) < 0)) //DoubleRotateLeft A.K.A LEFT-RIGHT ROTATION FIRST RIGHT THEN LEFT
+		} else if ((bf > 1) && (BalanceFactor(temp->left) < 0)) //DoubleRotateLeft A.K.A LEFT-RIGHT ROTATION FIRST RIGHT THEN LEFT
 		{
 			temp = DoubleLeftRotation(temp);
 			//cout << temp->left->value << " " << temp->value << " " << temp->right->value << endl;
@@ -237,8 +222,7 @@ public:
 
 	void Inorder(AVLNode<T>* temproot)
 	{
-		if (temproot != NULL)
-		{
+		if (temproot != NULL) {
 			Inorder(temproot->left);
 			cout << temproot->value << " ";
 			Inorder(temproot->right);
@@ -247,8 +231,7 @@ public:
 
 	void PreOrder(AVLNode<T>* _node)
 	{
-		if (_node != NULL)
-		{
+		if (_node != NULL) {
 			cout << _node->value << " ";
 			PreOrder(_node->left);
 			PreOrder(_node->right);
@@ -257,29 +240,29 @@ public:
 
 	void PostOrder(AVLNode<T>* _node)
 	{
-		if (_node != NULL)
-		{
+		if (_node != NULL) {
 			PostOrder(_node->left);
 			PostOrder(_node->right);
 			cout << _node->value << " ";
 		}
 	}
 
-	void SingleLevel(AVLNode<T>* root, int _cLevel) {
+	void SingleLevel(AVLNode<T>* root, int _cLevel)
+	{
 		if (root == NULL) {
 			return;
 		}
 		if (_cLevel == 1) {
 			cout << root->value << " ";
-		}
-		else if (_cLevel > 1) {
+		} else if (_cLevel > 1) {
 			int newLevel = _cLevel - 1;
 			SingleLevel(root->left, newLevel);
 			SingleLevel(root->right, newLevel);
 		}
 	}
 
-	void LevelOrderTreversal(AVLNode<T>* begin) {
+	void LevelOrderTreversal(AVLNode<T>* begin)
+	{
 		int h = getHeight(begin);
 		int i;
 		for (i = 1; i <= h; i++) {
@@ -288,7 +271,8 @@ public:
 		}
 	}
 
-	bool retrive(T _val) {
+	bool retrive(T _val)
+	{
 		AVLNode<T>* start = root;
 		while (start != NULL) {
 			if (start->value == _val)
@@ -317,37 +301,32 @@ public:
 			return _right;
 	}
 
-	Entry searchID(int id) {
+	LinkedList<Entry>* searchID(int id)
+	{
 		AVLNode<T>* temp = root;
-		Entry ent;
-		if (root != NULL && id == root->value.id)
-		{
-			ent = readLine(getPath(root->value.nodepath), getLine(root->value.nodepath));
-			return ent;
-		}
-
-		else if (temp != NULL)
-		{
-			while (temp != NULL)
-			{
+		LinkedList<Entry>* llist = NULL;
+		if (root != NULL && id == root->value.id) {
+			llist = readFromNode(root->value.nodepath);
+			return llist;
+		} else if (temp != NULL) {
+			while (temp != NULL) {
 				if (id == temp->value.id) {
-					ent = readLine(getPath(temp->value.nodepath), getLine(temp->value.nodepath));
-					return ent;
-				}
-				else if (id < temp->value.id) {
+					llist = readFromNode(temp->value.nodepath);
+					return llist;
+				} else if (id < temp->value.id) {
 					temp = temp->left;
-				}
-				else if (id > temp->value.id) {
+				} else if (id > temp->value.id) {
 					temp = temp->right;
 				}
 			}
 
 		}
 		cout << "Not Found!" << endl;
-		return ent;
+		return llist;
 	}
 
-	void getQuery(string query) {
+	void getQuery(string query)
+	{
 		string field;
 		string key_data;
 		int start = query.find("<");
@@ -366,7 +345,7 @@ public:
 		else
 			sid = int_of_str(key_value);
 
-		Entry ent = searchID(sid);
+		LinkedList<Entry>* ent = searchID(sid);
 
 		stringstream fields(field);
 		while (!fields.eof()) {
@@ -386,7 +365,8 @@ public:
 		}
 	}
 
-	void getQueryrange(string query) {
+	void getQueryrange(string query)
+	{
 		string field;
 		string data;
 		int start = query.find("<");
@@ -400,16 +380,16 @@ public:
 		data = fullTrim(data);
 		string dat = split(data, '=');
 		string ranger = split(dat, '-'); // I added this line
-		 searchIDrange(stoi(dat),stoi(ranger),field); //I modified this line
-		  // I added this line
-		
+		searchIDrange(stoi(dat), stoi(ranger), field); //I modified this line
+		// I added this line
+
 	}
 
-	void searchIDrange(int id, int id2,string field) {
+	void searchIDrange(int id, int id2, string field)
+	{
 		string newField = field;
 		Entry ent;
-		for (int i = id; i <=id2; i++)
-		{
+		for (int i = id; i <= id2; i++) {
 			ent = searchID(i);
 			stringstream fields(field);
 			while (!fields.eof()) {
@@ -431,3 +411,4 @@ public:
 		}
 	}
 };
+#endif // !AVL_H

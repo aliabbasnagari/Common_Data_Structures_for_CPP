@@ -4,6 +4,9 @@ Adnan Hayat
 Muhammad Wissam - 21I-0709
 */
 #pragma once
+#ifndef HEADER_H
+#define HEADER_H
+
 #include <iostream>
 using namespace std;
 
@@ -91,3 +94,4 @@ istream& operator>>(istream& input, FileNode& fn)
 	input >> fn.line;
 	return input;
 }
+#endif // !HEADER_H
