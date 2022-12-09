@@ -17,9 +17,10 @@ int main() {
 	q= readCSV(path);
 	AVLTree<DataNode> avl;
 	AVLTree<DataNode> avlname;
+	BTree<DataNode> btree(4);
 	avl.key = "ID";
 	avlname.key = "STATE";
-	BTree<DataNode> btree(4);
+	btree.key = "ID";
 	int len = q->Size();
 	for (int i = 0; i < len; i++)
 	{
