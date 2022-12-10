@@ -4,15 +4,18 @@ Adnan Hayat
 Muhammad Wissam - 21I-0709
 */
 
-//#include "BTree.h"
+#include<chrono>
+#include<thread>
+#include<iostream>
 #include "AVL.h"
+#include "BTree.h"
 #include "Header.h"
 #include "Utils.h"
+#include "Menus.h"
 #include "Interface.h"
-#include "BTree.h"
 using namespace std;
 
-int main()
+int main() 
 {
 	/*
 	string path = "datafiles/test2.csv";
@@ -65,7 +68,6 @@ int main()
 	system("color 5F");
 
 	Interface I(avl_list, btree_list, rbtree_list);
-	//I.avl_tree = avl_tree;
 
 	I.MainInterface();
 	cout << endl;
@@ -81,6 +83,7 @@ int main()
 	cout << endl;
 	cout << endl;
 	cout << endl;
+
 
 	for (int i = 0; i < avl_list->Size(); i++) {
 		avl_list->atIndex(i)->getValue().LevelOrderTreversal(avl_list->atIndex(i)->getValue().root);
