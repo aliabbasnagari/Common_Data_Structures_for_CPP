@@ -12,6 +12,11 @@
 #include "Header.h"
 using namespace std;
 
+const int NOPATHS= 1;
+string paths[NOPATHS] = { "datafiles/test2.csv" };
+
+string keys[6] = { "Id", "Year", "Cause", "State", "Deaths", "Age-adjusted death rate" };
+
 int int_of_str(string val)
 {
 	int int_rep = 0;
@@ -267,6 +272,15 @@ string toLower(string word)
 	string out = "";
 	for (int i = 0; i < word.length(); i++) {
 		out += tolower(word[i]);
+	}
+	return out;
+}
+
+string toUpper(string word)
+{
+	string out = "";
+	for (int i = 0; i < word.length(); i++) {
+		out += toupper(word[i]);
 	}
 	return out;
 }
