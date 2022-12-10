@@ -17,9 +17,10 @@ int main() {
 	q= readCSV(path);
 	AVLTree<DataNode> avl;
 	AVLTree<DataNode> avlname;
+	BTree<DataNode> btree(4);
 	avl.key = "ID";
 	avlname.key = "STATE";
-	BTree<DataNode> btree(4);
+	btree.key = "ID";
 	int len = q->Size();
 	for (int i = 0; i < len; i++)
 	{
@@ -38,7 +39,7 @@ int main() {
 	cout << endl << endl;
 	// avl.LevelOrderTreversal(avl.root);
 	cout << "Range Search: \n";
-	avl.getQueryrange("get <year,state,deaths> where # id=15-20");
+	//avl.getQueryrange("get <year,state,deaths> where # id=15-20");
 	cout << "Single Search: \n";
 	avl.getQuery("get <state> where # id=18");
 	cout << "\nString Search: \n";

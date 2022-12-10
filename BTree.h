@@ -8,6 +8,8 @@ Muhammad Wissam - 21I-0709
 #define BTREE_H
 
 #include <iostream>
+#include "Header.h"
+#include "Utils.h"
 using namespace std;
 
 template <typename T>
@@ -42,7 +44,7 @@ class BTree {
 public:
     BTreeNode<T>* root;
     int minDegree;
-
+    string key;
 public:
     BTree(int _tmd=0) {
         root = NULL;
@@ -249,10 +251,15 @@ template <class T> void BTreeNode<T>::merge(int idx) {
 
 // Insertion operation
 template <class T>
-void BTree<T>::insert(T k) {
+void BTree<T>::insert(T add) {
+    FileNode node(add.filepath, add.line);
+    string folder = "B_" + key;
+    string file = "node" + to_string(add.id) + ".txt";
+    add.nodepath = "database/" + folder + "/" + file;
+    saveNode(folder, file, node);
     if (root == NULL) {
         root = new BTreeNode<T>(minDegree, true);
-        root->keys[0] = k;
+        root->keys[0] = add;
         root->no_entires = 1;
     }
     else {
@@ -264,14 +271,14 @@ void BTree<T>::insert(T k) {
             s->splitChild(0, root);
 
             int i = 0;
-            if (s->keys[0] < k)
+            if (s->keys[0] < add)
                 i++;
-            s->C[i]->insertNonFull(k);
+            s->C[i]->insertNonFull(add);
 
             root = s;
         }
         else
-            root->insertNonFull(k);
+            root->insertNonFull(add);
     }
 }
 
