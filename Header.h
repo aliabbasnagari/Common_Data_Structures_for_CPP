@@ -45,6 +45,7 @@ struct DataNode
 };
 ostream& operator<<(ostream& out, const DataNode& dn)
 {
+	cout << "__________________________________\n";
 	if (dn.id != -1)
 		cout << dn.id << " - ";
 	if (dn.filepath != "")
@@ -53,6 +54,8 @@ ostream& operator<<(ostream& out, const DataNode& dn)
 		cout << dn.line << " - ";
 	if (dn.nodepath != "")
 		cout << dn.nodepath << endl;
+	cout << endl; 
+	cout << "__________________________________\n";
 	return out;
 }
 
