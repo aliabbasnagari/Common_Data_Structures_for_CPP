@@ -43,7 +43,7 @@ int main() {
 	avl.getQuery("get <state> where # id=18");
 	cout << "\nString Search: \n";
 	avlname.getQuery("get <id> where # state=Indiana");
-
+	
 
 	//Testing for B-Tree
 	cout << endl << "B-Tree: " << endl;
