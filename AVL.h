@@ -352,12 +352,17 @@ public:
 
 	void getQuery(string query)
 	{
-		string field;
-		string key_data;
-		int start = query.find("<");
-		int end = query.find(">");
+		string queryType = "";
+		string field = "";
+		string key_data = "";
+		int start = 0;
+		int end = query.find("<");
+		queryType = query.substr(start, end);
+		queryType = fullTrim(queryType); // Which query
+		start = query.find("<");
+		end = query.find(">");
 		start++;
-		field = query.substr(start, (end - start));
+		field = query.substr(start, (end - start)); // Which field
 		start = query.find('#');
 		end = query.length();
 		start++;
@@ -372,23 +377,27 @@ public:
 
 		LinkedList<Entry>* ent_list = searchID(sid);
 
-		for (int i = 0; i < ent_list->Size(); i++) {
-			Node<Entry>* temp = ent_list->atIndex(i);
-			stringstream fields(field);
-			while (!fields.eof()) {
-				getline(fields, field, ',');
-				if (toLower(field) == "id")
-					cout << "Id = " << temp->getValue().id << endl;
-				else if (toLower(field) == "year")
-					cout << "Year = " << temp->getValue().year << endl;
-				if (toLower(field) == "cause")
-					cout << "Cause = " << temp->getValue().cause_name << endl;
-				else if (toLower(field) == "state")
-					cout << "State = " << temp->getValue().state << endl;
-				else if (toLower(field) == "deaths")
-					cout << "Deaths = " << temp->getValue().deaths << endl;
-				else if (toLower(field) == "age-adjusted death rate")
-					cout << "Age-adjusted Death Rate = " << temp->getValue().death_rate << endl;
+		if (toUpper(queryType) == "GET") {
+			if (ent_list != NULL) {
+				for (int i = 0; i < ent_list->Size(); i++) {
+					Node<Entry>* temp = ent_list->atIndex(i);
+					stringstream fields(field);
+					while (!fields.eof()) {
+						getline(fields, field, ',');
+						if (toLower(field) == "id")
+							cout << "Id = " << temp->getValue().id << endl;
+						else if (toLower(field) == "year")
+							cout << "Year = " << temp->getValue().year << endl;
+						if (toLower(field) == "cause")
+							cout << "Cause = " << temp->getValue().cause_name << endl;
+						else if (toLower(field) == "state")
+							cout << "State = " << temp->getValue().state << endl;
+						else if (toLower(field) == "deaths")
+							cout << "Deaths = " << temp->getValue().deaths << endl;
+						else if (toLower(field) == "age-adjusted death rate")
+							cout << "Age-adjusted Death Rate = " << temp->getValue().death_rate << endl;
+					}
+				}
 			}
 		}
 	}
@@ -409,34 +418,68 @@ public:
 		string dat = split(data, '=');
 		string ranger = split(dat, '-'); // I added this line
 		searchIDrange(stoi(dat), stoi(ranger), field); //I modified this line
-		// I added this line
-
 	}
 
 	void searchIDrange(int id, int id2, string field)
 	{
 		string newField = field;
-		Entry ent;
+		LinkedList<Entry>* ent_list;
 		for (int i = id; i <= id2; i++) {
-			ent = searchID(i);
-			stringstream fields(field);
-			while (!fields.eof()) {
-				getline(fields, newField, ',');
-				if (toLower(newField) == "id")
-					cout << "Id = " << ent.id << endl;
-				else if (toLower(newField) == "year")
-					cout << "Year = " << ent.year << endl;
-				if (toLower(newField) == "cause")
-					cout << "Cause = " << ent.cause_name << endl;
-				else if (toLower(newField) == "state")
-					cout << "State = " << ent.state << endl;
-				else if (toLower(newField) == "deaths")
-					cout << "Deaths = " << ent.deaths << endl;
-				else if (toLower(newField) == "age-adjusted death rate")
-					cout << "Age-adjusted Death Rate = " << ent.death_rate << endl;
+			ent_list = searchID(i);
+			if (ent_list != NULL) {
+				stringstream fields(field);
+				while (!fields.eof()) {
+					getline(fields, newField, ',');
+					for (int k = 0; k < ent_list->Size(); k++) {
+						Node<Entry>* temp = ent_list->atIndex(k);
+						stringstream fields(field);
+						while (!fields.eof()) {
+							getline(fields, field, ',');
+							if (toLower(field) == "id")
+								cout << "Id = " << temp->getValue().id << endl;
+							else if (toLower(field) == "year")
+								cout << "Year = " << temp->getValue().year << endl;
+							if (toLower(field) == "cause")
+								cout << "Cause = " << temp->getValue().cause_name << endl;
+							else if (toLower(field) == "state")
+								cout << "State = " << temp->getValue().state << endl;
+							else if (toLower(field) == "deaths")
+								cout << "Deaths = " << temp->getValue().deaths << endl;
+							else if (toLower(field) == "age-adjusted death rate")
+								cout << "Age-adjusted Death Rate = " << temp->getValue().death_rate << endl;
+						}
+					}
+				}
 			}
 			cout << endl;
 		}
 	}
+
+	void searchIDRange(int ids, int ide)
+	{
+		Entry ent;
+		LinkedList<Entry>* listent;
+		for (int i = ids; i <= ide; i++) {
+			listent = searchID(i);
+			if (listent != NULL) {
+				listent->display();
+				cout << "-------------------------------------\n";
+			}
+		}
+	}
+
+	void searchIDRange(float ids, float ide)
+	{
+		Entry ent;
+		LinkedList<Entry>* listent;
+		for (float i = ids; i <= ide; i += 0.1) {
+			listent = searchID(i);
+			if (listent != NULL) {
+				listent->display();
+				cout << "-------------------------------------\n";
+			}
+		}
+	}
+
 };
 #endif // !AVL_H

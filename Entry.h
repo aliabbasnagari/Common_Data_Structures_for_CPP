@@ -3,6 +3,7 @@
 #define ENTRY_H
 
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 class Entry {
@@ -31,8 +32,10 @@ public:
 	string getState();
 	string getCause113();
 	bool operator==(Entry&);
+	operator string() const;
 	void display();
 	friend ostream& operator<<(ostream& output, const Entry&);
+	void setValues(string);
 };
 
 Entry::Entry(int _id = 0, int _yr = 0, string _cn = "", string _cn1 = "", string _st = "", int _dt = 0, float _dr = 0)
@@ -112,6 +115,48 @@ string Entry::getState()
 int Entry::getYear()
 {
 	return year;
+}
+
+void Entry::setValues(string val)
+{
+	string cause;
+	string temp;
+	stringstream sstream(val);
+	bool found = false;
+	getline(sstream, temp, ',');
+	id = stoi(temp);
+	getline(sstream, temp, ',');
+	year = stoi(temp);
+	getline(sstream, temp, ',');
+	if (temp[0] == '\"')
+		found = true;
+	while (found) {
+		cause += temp;
+		getline(sstream, temp, ',');
+		if (temp.find('\"') != -1)
+			found = false;
+		else
+			temp += ',';
+	}
+	cause += temp;
+	cause += temp;
+	cause_name_113 = cause;
+	getline(sstream, temp, ',');
+	cause_name = temp;
+	getline(sstream, temp, ',');
+	state = temp;
+	getline(sstream, temp, ',');
+	deaths = stoi(temp);
+	getline(sstream, temp, ',');
+	death_rate = stof(temp);
+}
+
+Entry::operator string() const
+{
+	string rate = to_string(death_rate);
+	if (rate.find('.') != -1)
+		rate = rate.substr(0, rate.find(".") + 2);
+	return to_string(id) + "," + to_string(year) + "," + cause_name_113 + "," + cause_name + "," + state + "," + to_string(deaths) + "," + rate + (char)10;
 }
 
 ostream& operator<<(ostream& out, const Entry& ent)

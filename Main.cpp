@@ -92,10 +92,11 @@ int main()
 	LinkedList<BTree<DataNode>>* btree_list = new LinkedList<BTree<DataNode>>;
 	LinkedList<RedBlackTree<DataNode>>* rbtree_list = new LinkedList<RedBlackTree<DataNode>>;
 
-	readLogs(avl_list, btree_list, rbtree_list);
-
 	system("color 5F");
 
+	cout << "\n\n              LOADING DATA...                " << endl;
+	readLogs(avl_list, btree_list, rbtree_list);
+	system("cls");
 	Interface I(avl_list, btree_list, rbtree_list);
 
 	I.MainInterface();

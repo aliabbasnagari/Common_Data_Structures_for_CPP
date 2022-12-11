@@ -13,6 +13,10 @@
 #include "Header.h"
 using namespace std;
 
+using namespace std;
+using namespace std::this_thread; // for putting a delay
+using namespace std::chrono;
+
 int getMaxId()
 {
 	int max = 0;
@@ -52,9 +56,21 @@ void updateMaxId(int ind)
 	return;
 }
 
-const int NOPATHS = 1;
-string paths[NOPATHS] = { "datafiles/test2.csv" };
+const int NOPATHS = 10;
+string paths[NOPATHS] = { "datafiles/NCHS_-_Leading_Causes_of_Death__United_States_1.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_2.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_3.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_4.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_5.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_6.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_7.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_8.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_9.csv",
+						"datafiles/NCHS_-_Leading_Causes_of_Death__United_States_10.csv",
+};
 int maxId = getMaxId();
+
+int TreeType = 0;
 
 string keys[6] = { "Id", "Year", "Cause", "State", "Deaths", "Age-adjusted death rate" };
 
@@ -86,55 +102,37 @@ Queue<Entry>* readCSV(string path)
 			string cause_113 = "";
 			string cause = "";
 			string state = "";
+			bool found = false;
 
-			getline(data_file, temp, ',');
+
+			getline(data_file, temp);
 			if (temp != "") {
-				id = stoi(temp);
-				//cout << "< " << id << " >" << endl;
-
-				getline(data_file, temp, ',');
-				year = stoi(temp);
-				//cout << "< " << year << " >" << endl;
-
-				getline(data_file, cause_113, ',');
-				temp = cause_113;
-				while (temp[0] == '\"') {
-					getline(data_file, temp, ',');
-					cause_113 += temp;
-				}
-				//cout << "< " << cause_113 << " >" << endl;
-
-				getline(data_file, cause, ',');
-				temp = cause;
-				while (temp[0] == '\"') {
-					getline(data_file, temp, ',');
+				stringstream sstream(temp);
+				getline(sstream, temp, ',');
+				obj.id = stoi(temp);
+				getline(sstream, temp, ',');
+				obj.year = stoi(temp);
+				getline(sstream, temp, ',');
+				if (temp[0] == '\"')
+					found = true;
+				while (found) {
 					cause += temp;
+					getline(sstream, temp, ',');
+					if (temp.find('\"') != -1)
+						found = false;
+					else
+						temp += ',';
 				}
-				//cout << "< " << cause << " >" << endl;
-
-				getline(data_file, state, ',');
-				temp = state;
-				while (state[0] == '\"') {
-					getline(data_file, temp, ',');
-					state += temp;
-				}
-				//cout << "< " << state << " >" << endl;
-
-				getline(data_file, temp, ',');
-				deaths = stoi(temp);
-				//cout << "< " << deaths << " >" << endl;
-
-				getline(data_file, temp);
-				death_rate = stof(temp);
-				//cout << "< " << death_rate << " >" << endl;
-
-				obj.cause_name_113 = cause_113;
-				obj.cause_name = cause;
-				obj.deaths = deaths;
-				obj.death_rate = death_rate;
-				obj.id = id;
-				obj.state = state;
-				obj.year = year;
+				cause += temp;
+				obj.cause_name_113 = cause;
+				getline(sstream, temp, ',');
+				obj.cause_name = temp;
+				getline(sstream, temp, ',');
+				obj.state = temp;
+				getline(sstream, temp, ',');
+				obj.deaths = stoi(temp);
+				getline(sstream, temp, ',');
+				obj.death_rate = stof(temp);
 				q->enqueue(obj);
 			}
 		}
@@ -186,60 +184,54 @@ Entry readLine(string path, int line)
 	// File Handling
 	fstream data_file;
 	data_file.open(path, ios::in);
-	int curr_line = 0;
+	int curr_line = 1;
 	if (data_file.good()) {
+		getline(data_file, val);
 		while (!data_file.eof() && curr_line <= line) {
 			string temp = "";
-			int id = 0;
-			int year = 0;
-			int deaths = 0;
+			int id;
+			int year;
+			int deaths;
 			float death_rate = 0;
 			string cause_113 = "";
 			string cause = "";
 			string state = "";
+			bool found = false;
 
-			getline(data_file, temp, ',');
-			if (temp != "ID" && temp != " " && temp != "")
-				id = stoi(temp);
-			getline(data_file, temp, ',');
-			if (temp != "Year" && temp != " " && temp != "")
-				year = stoi(temp);
-			getline(data_file, cause_113, ',');
-			temp = cause_113;
-			while (temp[0] == '\"') {
-				getline(data_file, temp, ',');
-				cause_113 += temp;
-			}
-			getline(data_file, cause, ',');
-			temp = cause;
-			while (temp[0] == '\"') {
-				getline(data_file, temp, ',');
-				cause += temp;
-			}
-			getline(data_file, state, ',');
-			temp = state;
-			while (state[0] == '\"') {
-				getline(data_file, temp, ',');
-				state += temp;
-			}
-			getline(data_file, temp, ',');
-			if (temp != "Deaths" && temp != " " && temp != "")
-				deaths = stoi(temp);
 			getline(data_file, temp);
-			if (temp != "Age-adjusted Death Rate" && temp != " " && temp != "")
-				death_rate = stof(temp);
-			obj.cause_name_113 = cause_113;
-			obj.cause_name = cause;
-			obj.deaths = deaths;
-			obj.death_rate = death_rate;
-			obj.id = id;
-			obj.state = state;
-			obj.year = year;
-			curr_line++;
+			if (temp != "") {
+				stringstream sstream(temp);
+				getline(sstream, temp, ',');
+				obj.id = stoi(temp);
+				getline(sstream, temp, ',');
+				obj.year = stoi(temp);
+				getline(sstream, temp, ',');
+				if (temp[0] == '\"')
+					found = true;
+				while (found) {
+					cause += temp;
+					getline(sstream, temp, ',');
+					if (temp.find('\"') != -1)
+						found = false;
+					else
+						temp += ',';
+				}
+				cause += temp;
+				obj.cause_name_113 = cause;
+				getline(sstream, temp, ',');
+				obj.cause_name = temp;
+				getline(sstream, temp, ',');
+				obj.state = temp;
+				getline(sstream, temp, ',');
+				obj.deaths = stoi(temp);
+				getline(sstream, temp, ',');
+				obj.death_rate = stof(temp);
+				curr_line++;
+			}
 		}
+		data_file.close();
+		return obj;
 	}
-	data_file.close();
-	return obj;
 }
 
 string getPath(string path)
@@ -283,7 +275,6 @@ string split(string& str, char sep)
 	return subStr;
 }
 
-// Helping functions
 // Trim extra spaces from starting of a string
 string trim(string text)
 {
@@ -355,6 +346,7 @@ LinkedList<Entry>* readFromNode(string path)
 			getline(node_file, lno);
 			if (line_path != "" && lno != "" && line_path != " " && lno != " ") {
 				line_no = stoi(lno);
+				cout << line_no << endl;
 				obj = readLine(line_path, line_no);
 				list->insert(obj);
 			}
@@ -412,6 +404,51 @@ void updateLog(string tree)
 		}
 	}
 	data_file.close();
+}
+
+bool deleteFromFile(string path, int line)
+{
+	fstream data_file;
+	data_file.open(path, ios::app);
+	if (data_file.good()) {
+		//data_file << ent;
+		data_file.close();
+		return true;
+	}
+	data_file.close();
+	return false;
+}
+
+bool updateFile(string path, Entry ent, int id)
+{
+	string updated = "";
+	fstream data_file;
+	data_file.open(path, ios::in);
+	if (data_file.good()) {
+		getline(data_file, updated);
+		updated += 10;
+		while (!data_file.eof()) {
+			string val;
+			Entry temp;
+			getline(data_file, val);
+			if (val != "" && val != " ") {
+				temp.setValues(val);
+				if (temp.id != id) {
+					updated += (string)temp;
+				} else {
+					updated += (string)ent;
+				}
+			}
+		}
+	}
+
+	data_file.close();
+	data_file.open(path, ios::out);
+	if (data_file.good()) {
+		data_file << updated;
+	}
+	data_file.close();
+	return false;
 }
 
 #endif // !UTILS_H

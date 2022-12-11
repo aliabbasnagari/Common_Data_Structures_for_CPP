@@ -252,7 +252,7 @@ public:
 			return;
 		Node<T>* curr = head;
 		while (curr->getNext() != NULL) {
-			cout << curr->getValue();
+			curr->getValue().display();
 			curr = curr->getNext();
 		}
 		curr->getValue().display();

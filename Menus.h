@@ -59,9 +59,9 @@ public:
 		cout << "				|                                                      |" << endl;
 		cout << "				|    4. Deletion                                       |" << endl;
 		cout << "				|                                                      |" << endl;
-		cout << "				|    5. Exit DSDB                                      |" << endl;
+		cout << "				|    5. Run Query                                      |" << endl;
 		cout << "				|                                                      |" << endl;
-		cout << "				|    6. Run Query                                      |" << endl;
+		cout << "				|    6. Exit DSDB                                      |" << endl;
 		cout << "				|                                                      |" << endl;
 		cout << "				|______________________________________________________|" << endl;
 	}
@@ -200,7 +200,9 @@ public:
 		cout << "				|                                                      |" << endl;
 		cout << "				|    5. Search by death rate.         	               |" << endl;
 		cout << "				|                                                      |" << endl;
-		cout << "				|    6. Go back to previous menu                       |" << endl;
+		cout << "				|    6. Search by id.                	               |" << endl;
+		cout << "				|                                                      |" << endl;
+		cout << "				|    7. Go back to previous menu                       |" << endl;
 		cout << "				|______________________________________________________|" << endl;
 	}
 
@@ -220,15 +222,13 @@ public:
 		cout << "				|                                                      |" << endl;
 		cout << "				|    1. Search by year of deaths.                      |" << endl;
 		cout << "				|                                                      |" << endl;
-		cout << "				|    2. Search by cause of deaths.                     |" << endl;
+		cout << "				|    2. Search by number of deaths.                    |" << endl;
 		cout << "				|                                                      |" << endl;
-		cout << "				|    3. Search by State of deaths.                     |" << endl;
+		cout << "				|    3. Search by death rate.       	               |" << endl;
 		cout << "				|                                                      |" << endl;
-		cout << "				|    4. Search by number of deaths.                    |" << endl;
+		cout << "				|    4. Search by Id                                   |" << endl;
 		cout << "				|                                                      |" << endl;
-		cout << "				|    5. Search by death rate.       	               |" << endl;
-		cout << "				|                                                      |" << endl;
-		cout << "				|    6. Go back to previous menu                       |" << endl;
+		cout << "				|    5. Go back to previous menu                       |" << endl;
 		cout << "				|______________________________________________________|" << endl;
 	}
 
