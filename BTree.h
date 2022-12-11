@@ -275,6 +275,7 @@ class BTree {
 public:
 	BTreeNode<T>* root;
 	int t;
+	string key;
 
 public:
 	BTree(int _t)
