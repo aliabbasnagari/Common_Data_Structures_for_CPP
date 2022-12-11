@@ -368,6 +368,7 @@ void updateLog(string tree)
 {
 	bool found = false;
 	string val = "";
+	int m;
 	string root = "database/";
 	// File Handling
 	fstream data_file;
@@ -376,7 +377,28 @@ void updateLog(string tree)
 		while (!data_file.eof()) {
 			val = "";
 			data_file >> val;
-			if (val == tree) {
+			if (val == "B_ID" || val == "B_NAME" || val == "B_YEAR" || val == "B_CAUSE" || val == "B_STATE" || val == "B_DEATHS" || val == "B_AGE-ADJUSTED") {
+				if (val == "B_AGE-ADJUSTED") {
+					data_file >> val >> val;
+					data_file >> m;
+					if (("B_AGE-ADJUSTED DEATH RATE " + to_string(m)) == tree) {
+						found = true;
+						break;
+					}
+				} else {
+					data_file >> m;
+					if ((val + " " + to_string(m)) == tree) {
+						found = true;
+						break;
+					}
+				}
+			} else if (val == "AVL_AGE-ADJUSTED" || val == "RNB_AGE-ADJUSTED") {
+				data_file >> val >> val;
+				if ("AVL_AGE-ADJUSTED DEATH RATE" == tree || "RNB_AGE-ADJUSTED DEATH RATE" == tree) {
+					found = true;
+					break;
+				}
+			} else if (val == tree) {
 				found = true;
 				break;
 			}

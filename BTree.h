@@ -25,7 +25,6 @@ public:
 		t = _t;
 		leaf = _leaf;
 		int newSize = (2 * t) - 1;
-		cout << "NS = " << newSize << endl;
 		keys = new T[newSize];
 		C = new BTreeNode * [2 * t];
 		n = 0;

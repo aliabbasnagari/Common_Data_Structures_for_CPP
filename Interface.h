@@ -453,6 +453,8 @@ void createBTree(string key, int m, LinkedList<BTree<DataNode>>* list)
 	q = readCSV(paths[0]);
 	BTree<DataNode> temp(m);
 	temp.key = toUpper(key);
+	if (temp.key == "DEATH RATE")
+		temp.key = "AGE-ADJUSTED DEATH RATE";
 	int len = q->Size();
 	for (int i = 0; i < len; i++) {
 		int indexing = -1;
@@ -492,6 +494,8 @@ void createRBTree(string key, LinkedList<RedBlackTree<DataNode>>* list)
 	q = readCSV(paths[0]);
 	RedBlackTree<DataNode> temp;
 	temp.key = toUpper(key);
+	if (temp.key == "DEATH RATE")
+		temp.key = "AGE-ADJUSTED DEATH RATE";
 	int len = q->Size();
 	for (int i = 0; i < len; i++) {
 		int indexing = -1;
