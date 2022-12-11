@@ -8,6 +8,7 @@ private:
 	T value;
 	Node<T>* next;
 public:
+	Node() {}
 	Node(T _data) {
 		value = _data;
 		next = NULL;

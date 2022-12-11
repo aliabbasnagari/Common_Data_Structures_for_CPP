@@ -56,14 +56,10 @@ int main()
 	cout << endl << "B-Tree: " << endl;
 	btree.traverse();
 	*/
-	/*
+
 	LinkedList<AVLTree<DataNode>>* avl_list = new LinkedList<AVLTree<DataNode>>;
 	LinkedList<BTree<DataNode>>* btree_list = new LinkedList<BTree<DataNode>>;
 	LinkedList<RedBlackTree<DataNode>>* rbtree_list = new LinkedList<RedBlackTree<DataNode>>;
-
-	string path = "datafiles/test2.csv";
-	Queue<Entry>* q;
-	q = readCSV(path);
 
 	system("color 5F");
 
@@ -89,25 +85,12 @@ int main()
 		avl_list->atIndex(i)->getValue().LevelOrderTreversal(avl_list->atIndex(i)->getValue().root);
 	}
 
+	cout << "BTREE" << endl;
 	for (int i = 0; i < btree_list->Size(); i++) {
 		btree_list->atIndex(i)->getValue().traverse();
 	}
-	*/
-	BTree<DataNode> tree(4);
 
-	string path = "datafiles/test2.csv";
-	Queue<Entry>* q;
-	q = readCSV(path);
-	int len = q->Size();
-	for (int i = 0; i < len; i++) {
-		DataNode node;
-		node.filepath = path;
-		node.id = q->Front().getId();
-		node.line = (i + 1);
-		tree.insertion(node);
-		q->dequeue();
-	}
-
-	tree.traverse();
+	cin.get();
+	
 	return 0;
 }

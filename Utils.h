@@ -1,6 +1,7 @@
 #pragma once
 #ifndef UTILS_H
 #define UTILS_H
+
 /* All Utility Functions */
 #include <iostream>
 #include <fstream>
@@ -322,4 +323,5 @@ LinkedList<Entry>* readFromNode(string path)
 	node_file.close();
 	return list;
 }
+
 #endif // !UTILS_H

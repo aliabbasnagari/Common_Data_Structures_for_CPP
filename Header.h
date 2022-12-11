@@ -43,6 +43,7 @@ struct DataNode
 	}
 	friend ostream& operator<<(ostream& output, const DataNode&);
 };
+
 ostream& operator<<(ostream& out, const DataNode& dn)
 {
 	cout << "__________________________________\n";
@@ -82,6 +83,7 @@ struct FileNode
 	friend ostream& operator<<(ostream& output, const FileNode&);
 	friend istream& operator>>(istream& input, FileNode&);
 };
+
 ostream& operator<<(ostream& out, const FileNode& fn)
 {
 	if (fn.node_path != "")

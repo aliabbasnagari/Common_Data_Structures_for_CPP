@@ -278,6 +278,11 @@ public:
 	string key;
 
 public:
+	BTree()
+	{
+		root = NULL;
+		t = 0;
+	}
 	BTree(int _t)
 	{
 		root = NULL;
@@ -290,11 +295,17 @@ public:
 			root->traverse();
 	}
 
-	void insertion(T k)
+	void insert(T _val)
 	{
+		FileNode fnode(_val.filepath, _val.line);
+		string folder = "B_" + key;
+		string file = "node" + to_string(_val.id) + ".txt";
+		_val.nodepath = "database/" + folder + "/" + file;
+		saveNode(folder, file, fnode);
+		
 		if (root == NULL) {
 			root = new BTreeNode<T>(t, true);
-			root->keys[0] = k;
+			root->keys[0] = _val;
 			root->n = 1;
 		} else {
 			if (root->n == 2 * t - 1) {
@@ -305,13 +316,13 @@ public:
 				s->splitChild(0, root);
 
 				int i = 0;
-				if (s->keys[0] < k)
+				if (s->keys[0] < _val)
 					i++;
-				s->C[i]->insertNonFull(k);
+				s->C[i]->insertNonFull(_val);
 
 				root = s;
 			} else
-				root->insertNonFull(k);
+				root->insertNonFull(_val);
 		}
 	}
 	void deletion(int k)
