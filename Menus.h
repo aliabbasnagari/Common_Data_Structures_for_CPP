@@ -2,6 +2,35 @@
 #include<iostream>
 using namespace std;
 
+void messageLoading()
+{
+	cout << endl;
+	cout << endl;
+	cout << "                                                        LOADING...              " << endl;
+	cout << endl;
+	cout << endl;
+}
+
+void messageWrongInput()
+{
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << "                           -------------------  WRONG INPUT!  -------------------" << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+}
+
+void pressAnyKey()
+{
+
+	cout << endl;
+	cout << " -------------------  PRESS ANY KEY TO CONTINUE  ------------------- " << endl;
+	cout << endl;
+	cin.get();
+}
+
 class Menus
 {
 

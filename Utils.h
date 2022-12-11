@@ -13,8 +13,48 @@
 #include "Header.h"
 using namespace std;
 
-const int NOPATHS= 1;
+int getMaxId()
+{
+	int max = 0;
+
+	fstream data_file;
+
+	data_file.open("database/Indexing.txt", ios::in);
+
+	if (data_file.good()) {
+		int temp = -1;
+		while (!data_file.eof()) {
+			data_file >> temp;
+			if (temp != -1) {
+				data_file.close();
+				return temp;
+			}
+
+		}
+		data_file.close();
+		return 0;
+	}
+
+	data_file.close();
+
+	return max;
+}
+void updateMaxId(int ind)
+{
+	fstream data_file;
+	data_file.open("database/Indexing.txt", ios::out);
+	if (data_file.good()) {
+		data_file << ind;
+		data_file.close();
+		return;
+	}
+	data_file.close();
+	return;
+}
+
+const int NOPATHS = 1;
 string paths[NOPATHS] = { "datafiles/test2.csv" };
+int maxId = getMaxId();
 
 string keys[6] = { "Id", "Year", "Cause", "State", "Deaths", "Age-adjusted death rate" };
 
@@ -129,7 +169,7 @@ void saveNode(string folder, string file, FileNode data)
 			data_file << data.line << endl;
 		} else {
 			int dir = _mkdir((root + folder).c_str());
-			data_file.open(root + folder + "/" + file,ios::app);
+			data_file.open(root + folder + "/" + file, ios::app);
 			if (data_file.good()) {
 				data_file << data.node_path << endl;
 				data_file << data.line << endl;
@@ -322,6 +362,34 @@ LinkedList<Entry>* readFromNode(string path)
 	}
 	node_file.close();
 	return list;
+}
+
+void updateLog(string tree)
+{
+	bool found = false;
+	string val = "";
+	string root = "database/";
+	// File Handling
+	fstream data_file;
+	data_file.open(root + "logs.txt", ios::in);
+	if (data_file.good()) {
+		while (!data_file.eof()) {
+			val = "";
+			data_file >> val;
+			if (val == tree) {
+				found = true;
+				break;
+			}
+		}
+		data_file.close();
+	}
+	if (!found) {
+		data_file.open(root + "logs.txt", ios::app);
+		if (data_file.good()) {
+			data_file << tree << endl;
+		}
+	}
+	data_file.close();
 }
 
 #endif // !UTILS_H

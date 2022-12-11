@@ -13,7 +13,7 @@ using namespace std;
 
 template <typename T>
 class LinkedList {
-private:
+public:
 	int size;
 	Node<T>* head;
 	Node<T>* tail;
@@ -246,14 +246,16 @@ public:
 		cout << " ]";
 	}
 
-	void display() const
+	void display()
 	{
+		if (head == NULL)
+			return;
 		Node<T>* curr = head;
 		while (curr->getNext() != NULL) {
 			cout << curr->getValue();
 			curr = curr->getNext();
 		}
-		cout << curr->getValue();
+		curr->getValue().display();
 	}
 
 	~LinkedList()

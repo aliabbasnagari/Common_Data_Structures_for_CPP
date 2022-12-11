@@ -302,6 +302,30 @@ public:
 			return _right;
 	}
 
+	LinkedList<Entry>* searchID(float id)
+	{
+		AVLNode<T>* temp = root;
+		LinkedList<Entry>* llist = NULL;
+		if (root != NULL && id == root->value.id) {
+			llist = readFromNode(root->value.nodepath);
+			return llist;
+		} else if (temp != NULL) {
+			while (temp != NULL) {
+				if (id == temp->value._id) {
+					llist = readFromNode(temp->value.nodepath);
+					return llist;
+				} else if (id < temp->value.id) {
+					temp = temp->left;
+				} else if (id > temp->value.id) {
+					temp = temp->right;
+				}
+			}
+
+		}
+		cout << "Not Found!" << endl;
+		return llist;
+	}
+
 	LinkedList<Entry>* searchID(int id)
 	{
 		AVLNode<T>* temp = root;

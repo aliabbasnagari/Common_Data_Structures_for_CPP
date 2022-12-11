@@ -13,6 +13,7 @@ using namespace std;
 struct DataNode
 {
 	int id;
+	float _id;
 	string filepath;
 	int line;
 	string nodepath;

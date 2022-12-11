@@ -31,6 +31,7 @@ public:
 	string getState();
 	string getCause113();
 	bool operator==(Entry&);
+	void display();
 	friend ostream& operator<<(ostream& output, const Entry&);
 };
 
@@ -44,6 +45,10 @@ Entry::Entry(int _id = 0, int _yr = 0, string _cn = "", string _cn1 = "", string
 	deaths = _dt;
 	death_rate = _dr;
 };
+void Entry::display()
+{
+	cout << id << " , " << year << " , " << cause_name_113 << " , " << cause_name << " , " << state << " , " << deaths << " , " << death_rate << endl;
+}
 
 bool Entry::operator==(Entry& ent)
 {
